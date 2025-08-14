@@ -1,0 +1,32 @@
+/* Base styling for DKP Site */
+
+.site-body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.site-nav {
+    background-color: #333;
+    padding: 1rem;
+}
+
+.site-nav a {
+    color: #fff;
+    margin-right: 0.5rem;
+    text-decoration: none;
+}
+
+.site-nav a.active {
+    font-weight: bold;
+}
+
+.site-main {
+    padding: 1rem;
+}
+
+.site-footer {
+    text-align: center;
+    padding: 1rem;
+    background-color: #f4f4f4;
+}
