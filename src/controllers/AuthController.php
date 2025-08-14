@@ -20,15 +20,17 @@ class AuthController
 
     public function login(): void
     {
+        $guild = $_POST['guild'] ?? '';
         $email = $_POST['email'] ?? '';
         $password = $_POST['password'] ?? '';
 
-        if ($this->auth->login($email, $password)) {
-            $_SESSION['user'] = $email;
-            echo "Logged in as {$email}";
-        } else {
-            $this->showLoginForm(['error' => 'Invalid credentials']);
+        $user = $this->auth->login($guild, $email, $password);
+        if ($user) {
+            $_SESSION['user'] = $user;
+            header('Location: /');
+            exit;
         }
+        $this->showLoginForm(['error' => 'Invalid credentials']);
     }
 
     public function showRegisterForm(array $data = []): void
@@ -39,16 +41,27 @@ class AuthController
 
     public function register(): void
     {
+        $guild = $_POST['guild'] ?? '';
         $email = $_POST['email'] ?? '';
         $password = $_POST['password'] ?? '';
+        $display = $_POST['display_name'] ?? '';
+        $role = $_POST['role'] ?? 'guild_member';
+        $gameRole = $_POST['game_role'] ?? '';
 
-        if (!$this->auth->register($email, $password)) {
-            $error = $email && $password ? 'User already exists' : 'Please fill in all fields';
+        if (!$this->auth->register($guild, $email, $password, $display, $role, $gameRole)) {
+            $error = $guild && $email && $password ? 'User already exists' : 'Please fill in all fields';
             $this->showRegisterForm(['error' => $error]);
             return;
         }
 
         echo 'Registration successful. <a href="/login">Login</a>';
+    }
+
+    public function logout(): void
+    {
+        session_destroy();
+        header('Location: /login');
+        exit;
     }
 
     public function showForgotForm(array $data = []): void
