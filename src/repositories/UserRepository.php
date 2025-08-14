@@ -9,11 +9,11 @@ class UserRepository
         return $guilds[$guild]['users'][$email] ?? null;
     }
 
-    public function create(string $guild, string $email, string $password, string $displayName, string $role, string $gameRole): void
+    public function create(string $guild, string $email, string $passwordHash, string $displayName, string $role, string $gameRole): void
     {
         $guilds = $_SESSION['guilds'] ?? [];
         $guilds[$guild]['users'][$email] = [
-            'password' => $password,
+            'password' => $passwordHash,
             'display_name' => $displayName,
             'role' => $role,
             'game_role' => $gameRole

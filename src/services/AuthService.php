@@ -15,7 +15,7 @@ class AuthService
     public function login(string $guild, string $email, string $password): ?array
     {
         $user = $this->users->findByEmail($guild, $email);
-        if ($user && $user['password'] === $password) {
+        if ($user && password_verify($password, $user['password'])) {
             unset($user['password']);
             return $user + ['email' => $email, 'guild' => $guild];
         }
@@ -27,7 +27,8 @@ class AuthService
         if (!$guild || !$email || !$password || $this->users->findByEmail($guild, $email)) {
             return false;
         }
-        $this->users->create($guild, $email, $password, $displayName, $role, $gameRole);
+        $passwordHash = password_hash($password, PASSWORD_DEFAULT);
+        $this->users->create($guild, $email, $passwordHash, $displayName, $role, $gameRole);
         return true;
     }
 }
