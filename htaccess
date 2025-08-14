@@ -1,11 +1,14 @@
 RewriteEngine On
 
-# If the request is already for /public, don’t rewrite it again.
+# Don’t rewrite if already inside /public
 RewriteCond %{REQUEST_URI} !^/public/
 
-# If the request is not for an existing file or directory, rewrite it.
+# Serve existing files/directories directly
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 
-# Send everything else to public
+# IMPORTANT: when "/" is requested, hit the file, not the folder
+RewriteRule ^$ public/index.php [L]
+
+# Everything else gets mapped into /public
 RewriteRule ^(.*)$ public/$1 [L]
