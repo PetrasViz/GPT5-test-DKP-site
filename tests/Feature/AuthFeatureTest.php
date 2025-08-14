@@ -2,7 +2,9 @@
 
 namespace Tests\Feature;
 
+use App\Repositories\UserRepository;
 use App\Services\AuthService;
+use PDO;
 use PHPUnit\Framework\TestCase;
 
 class AuthFeatureTest extends TestCase
@@ -12,8 +14,23 @@ class AuthFeatureTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $_SESSION = [];
-        $this->auth = new AuthService();
+
+        $pdo = new PDO('sqlite::memory:');
+        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $pdo->exec('CREATE TABLE users (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            email TEXT NOT NULL UNIQUE,
+            password_hash TEXT NOT NULL,
+            display_name TEXT NOT NULL,
+            role TEXT NOT NULL,
+            game_role TEXT NULL,
+            is_active INTEGER NOT NULL DEFAULT 1,
+            created_at DATETIME NOT NULL,
+            updated_at DATETIME NOT NULL
+        )');
+
+        $repo = new UserRepository($pdo);
+        $this->auth = new AuthService($repo);
     }
 
     public function testUserCanRegisterAndLogin(): void
@@ -26,8 +43,6 @@ class AuthFeatureTest extends TestCase
         $gameRole = 'mage';
 
         $this->assertTrue($this->auth->register($guild, $email, $password, $display, $role, $gameRole));
-        $this->assertArrayHasKey($email, $_SESSION['guilds'][$guild]['users']);
-        $this->assertTrue(password_verify($password, $_SESSION['guilds'][$guild]['users'][$email]['password']));
 
         $user = $this->auth->login($guild, $email, $password);
         $this->assertSame($display, $user['display_name']);
