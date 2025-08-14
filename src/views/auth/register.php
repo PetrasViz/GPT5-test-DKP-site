@@ -1,9 +1,8 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Register</title>
-</head>
-<body>
+<?php
+$title = 'Register';
+$currentPage = 'register';
+ob_start();
+?>
 <h1>Register</h1>
 <?php if (!empty($error)): ?>
 <p style="color:red"><?= htmlspecialchars($error) ?></p>
@@ -33,5 +32,6 @@
     <button type="submit">Register</button>
 </form>
 <p><a href="/login">Back to login</a></p>
-</body>
-</html>
+<?php
+$content = ob_get_clean();
+include __DIR__ . '/../layouts/main.php';

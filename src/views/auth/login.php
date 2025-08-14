@@ -1,9 +1,8 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Login</title>
-</head>
-<body>
+<?php
+$title = 'Login';
+$currentPage = 'login';
+ob_start();
+?>
 <h1>Login</h1>
 <?php if (!empty($error)): ?>
 <p style="color:red"><?= htmlspecialchars($error) ?></p>
@@ -16,5 +15,6 @@
     <button type="submit">Login</button>
 </form>
 <p><a href="/register">Register</a> | <a href="/forgot">Forgot password?</a></p>
-</body>
-</html>
+<?php
+$content = ob_get_clean();
+include __DIR__ . '/../layouts/main.php';

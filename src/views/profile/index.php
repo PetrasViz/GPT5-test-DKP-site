@@ -1,7 +1,8 @@
-<!DOCTYPE html>
-<html>
-<head><title>Profile</title></head>
-<body>
+<?php
+$title = 'Profile';
+$currentPage = 'profile';
+ob_start();
+?>
 <h1>Profile</h1>
 <form method="post" action="/profile">
     <label>Email: <input type="email" name="email" value="<?= htmlspecialchars($user['email']) ?>" required></label><br>
@@ -10,13 +11,13 @@
     <label>Display Name: <input type="text" name="display_name" value="<?= htmlspecialchars($user['display_name']) ?>" required></label><br>
     <label>In-game Role:
         <select name="game_role">
-            <?php $roles = ['tank'=>'Tank','dps'=>'DPS','ranged dps'=>'Ranged DPS','healer'=>'Healer']; foreach($roles as $value=>$label): ?>
+            <?php $roles = ['tank'=>'Tank','dps'=>'DPS','ranged dps'=>'Ranged DPS','healer'=>'Healer']; foreach($roles as $value=> $label): ?>
             <option value="<?= $value ?>"<?= $user['game_role']===$value?' selected':'' ?>><?= $label ?></option>
             <?php endforeach; ?>
         </select>
     </label><br>
     <button type="submit">Save</button>
 </form>
-<p><a href="/">Back to home</a></p>
-</body>
-</html>
+<?php
+$content = ob_get_clean();
+include __DIR__ . '/../layouts/main.php';
