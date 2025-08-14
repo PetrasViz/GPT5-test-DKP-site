@@ -1,0 +1,7 @@
+{
+  "name": "dkp-site",
+  "version": "1.0.0",
+  "scripts": {
+    "test": "echo \"No tests\""
+  }
+}
