@@ -12,18 +12,22 @@ class AuthService
         $this->users = $users ?? new UserRepository();
     }
 
-    public function login(string $email, string $password): bool
+    public function login(string $guild, string $email, string $password): ?array
     {
-        $user = $this->users->findByEmail($email);
-        return $user && $user['password'] === $password;
+        $user = $this->users->findByEmail($guild, $email);
+        if ($user && $user['password'] === $password) {
+            unset($user['password']);
+            return $user + ['email' => $email, 'guild' => $guild];
+        }
+        return null;
     }
 
-    public function register(string $email, string $password): bool
+    public function register(string $guild, string $email, string $password, string $displayName, string $role, string $gameRole): bool
     {
-        if (!$email || !$password || $this->users->findByEmail($email)) {
+        if (!$guild || !$email || !$password || $this->users->findByEmail($guild, $email)) {
             return false;
         }
-        $this->users->create($email, $password);
+        $this->users->create($guild, $email, $password, $displayName, $role, $gameRole);
         return true;
     }
 }
