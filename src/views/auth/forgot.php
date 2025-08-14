@@ -9,7 +9,8 @@ ob_start();
 <?php endif; ?>
 <form method="post" action="/forgot">
     <?= \App\Helpers\Csrf::inputField() ?>
-    <label>Email: <input type="email" name="email" required></label><br>
+    <label for="forgot-email">Email:</label>
+    <input type="email" id="forgot-email" name="email" required><br>
     <button type="submit">Send reset link</button>
 </form>
 <p><a href="/login">Back to login</a></p>
