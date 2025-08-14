@@ -10,17 +10,13 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
+    <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title><?= htmlspecialchars(\$title) ?></title>
-    <style>
-        nav a.active {
-            font-weight: bold;
-        }
-    </style>
+    <link rel="stylesheet" href="/css/main.css">
 </head>
-<body>
-<nav>
+<body class="site-body">
+<nav class="site-nav">
     <a href="/" class="<?= \$currentPage === 'home' ? 'active' : '' ?>">Home</a> |
     <a href="/auctions" class="<?= \$currentPage === 'auctions' ? 'active' : '' ?>">Auctions</a> |
     <a href="/auction-history" class="<?= \$currentPage === 'auction-history' ? 'active' : '' ?>">Auction History</a> |
@@ -36,10 +32,10 @@
         <a href="/register" class="<?= \$currentPage === 'register' ? 'active' : '' ?>">Register</a>
     <?php endif; ?>
 </nav>
-<main>
+<main class="site-main">
     <?= \$content ?? '' ?>
 </main>
-<footer>
+<footer class="site-footer">
     <p>&copy; <?= date('Y') ?> DKP Site</p>
 </footer>
 </body>
