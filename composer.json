@@ -1,4 +1,9 @@
 {
     "name": "dkp/site",
-    "require": {}
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "App\\": "src/"
+        }
+    }
 }
