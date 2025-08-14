@@ -1,61 +1,110 @@
-/* Base styling for DKP Site */
+/* Modern fantasy-inspired styling for DKP Site */
 
 .site-body {
-    font-family: Arial, sans-serif;
+    font-family: 'Roboto', sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #fff;
-    color: #000;
+    background: linear-gradient(180deg, #0d0d0d 0%, #1a1a1a 100%);
+    color: #e0e0e0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
 
-.site-nav {
-    background-color: #333;
-    padding: 1rem;
+.site-header {
+    background-color: #1e1e1e;
+    border-bottom: 3px solid #c9a227;
 }
 
-.site-nav a {
-    color: #fff;
-    margin-right: 0.5rem;
-    text-decoration: none;
+.site-logo {
+    font-family: 'Cinzel', serif;
+    color: #c9a227;
 }
 
-.site-nav a:focus,
-.site-nav a:hover {
-    outline: 2px solid #fff;
-    outline-offset: 2px;
-    text-decoration: underline;
+.site-header .navbar-nav .nav-link {
+    color: #e0e0e0;
+    transition: color 0.2s;
 }
 
-.site-nav a.active {
-    font-weight: bold;
+.site-header .navbar-nav .nav-link:hover,
+.site-header .navbar-nav .nav-link:focus {
+    color: #c9a227;
+    outline: none;
+}
+
+.site-header .navbar-nav .nav-link.active {
+    border-bottom: 2px solid #c9a227;
 }
 
 .site-main {
-    padding: 1rem;
+    flex: 1;
+    padding: 2rem;
 }
 
 .site-footer {
     text-align: center;
     padding: 1rem;
-    background-color: #f4f4f4;
+    background-color: #1e1e1e;
+    border-top: 3px solid #c9a227;
+}
+
+h1, h2, h3 {
+    font-family: 'Cinzel', serif;
+    color: #e0e0e0;
 }
 
 button {
-    background-color: #0069d9;
-    color: #fff;
+    background-color: #c9a227;
+    color: #1a1a1a;
     border: none;
     padding: 0.5rem 1rem;
     cursor: pointer;
+    font-family: 'Roboto', sans-serif;
 }
 
 button:hover,
 button:focus {
-    background-color: #0053ba;
+    background-color: #e0c15f;
 }
 
 button:focus,
 input:focus,
 select:focus {
-    outline: 2px solid #000;
+    outline: 2px solid #c9a227;
     outline-offset: 2px;
 }
+
+/* Responsive tweaks */
+@media (max-width: 768px) {
+    .site-main {
+        padding: 1rem;
+    }
+
+    .site-header .navbar-brand {
+        font-size: 1.25rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .site-main {
+        padding: 0.75rem;
+    }
+
+    .site-header .navbar-nav .nav-link {
+        padding-left: 0.5rem;
+        padding-right: 0.5rem;
+    }
+
+    h1 {
+        font-size: 1.75rem;
+    }
+
+    h2 {
+        font-size: 1.5rem;
+    }
+
+    h3 {
+        font-size: 1.25rem;
+    }
+}
+
