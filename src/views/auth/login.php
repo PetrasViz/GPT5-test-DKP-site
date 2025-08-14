@@ -9,6 +9,7 @@
 <p style="color:red"><?= htmlspecialchars($error) ?></p>
 <?php endif; ?>
 <form method="post" action="/login">
+    <?= \App\Helpers\Csrf::inputField() ?>
     <label>Guild: <input type="text" name="guild" required></label><br>
     <label>Email: <input type="email" name="email" required></label><br>
     <label>Password: <input type="password" name="password" required></label><br>

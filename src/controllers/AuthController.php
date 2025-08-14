@@ -2,6 +2,7 @@
 namespace App\Controllers;
 
 use App\Services\AuthService;
+use App\Helpers\Csrf;
 
 class AuthController
 {
@@ -20,6 +21,11 @@ class AuthController
 
     public function login(): void
     {
+        if (!Csrf::validateToken($_POST['csrf_token'] ?? '')) {
+            http_response_code(400);
+            echo 'Invalid CSRF token';
+            return;
+        }
         $guild = $_POST['guild'] ?? '';
         $email = $_POST['email'] ?? '';
         $password = $_POST['password'] ?? '';
@@ -41,6 +47,11 @@ class AuthController
 
     public function register(): void
     {
+        if (!Csrf::validateToken($_POST['csrf_token'] ?? '')) {
+            http_response_code(400);
+            echo 'Invalid CSRF token';
+            return;
+        }
         $guild = $_POST['guild'] ?? '';
         $email = $_POST['email'] ?? '';
         $password = $_POST['password'] ?? '';
@@ -72,6 +83,11 @@ class AuthController
 
     public function sendResetLink(): void
     {
+        if (!Csrf::validateToken($_POST['csrf_token'] ?? '')) {
+            http_response_code(400);
+            echo 'Invalid CSRF token';
+            return;
+        }
         $email = $_POST['email'] ?? '';
         $message = 'If the email is registered, a reset link has been sent.';
         $this->showForgotForm(['message' => $message]);

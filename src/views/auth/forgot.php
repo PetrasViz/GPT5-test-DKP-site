@@ -9,6 +9,7 @@
 <p><?= htmlspecialchars($message) ?></p>
 <?php endif; ?>
 <form method="post" action="/forgot">
+    <?= \App\Helpers\Csrf::inputField() ?>
     <label>Email: <input type="email" name="email" required></label><br>
     <button type="submit">Send reset link</button>
 </form>
