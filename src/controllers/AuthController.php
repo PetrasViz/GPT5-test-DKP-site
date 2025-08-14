@@ -81,7 +81,7 @@ class AuthController
         $email = trim($_POST['email'] ?? '');
         $password = $_POST['password'] ?? '';
         $display = trim($_POST['display_name'] ?? '');
-        $role = $_POST['role'] ?? 'guild_member';
+        $role = 'guild_member'; // Elevated roles must be granted by an administrator
         $gameRole = $_POST['game_role'] ?? '';
 
         $errors = [];
@@ -97,9 +97,6 @@ class AuthController
         if ($display === '') {
             $errors['display_name'] = 'Display name is required';
         }
-        if ($role === '') {
-            $errors['role'] = 'Role is required';
-        }
         if ($gameRole === '') {
             $errors['game_role'] = 'In-game role is required';
         }
@@ -111,7 +108,6 @@ class AuthController
                     'guild' => $guild,
                     'email' => $email,
                     'display_name' => $display,
-                    'role' => $role,
                     'game_role' => $gameRole
                 ]
             ]);
@@ -125,7 +121,6 @@ class AuthController
                     'guild' => $guild,
                     'email' => $email,
                     'display_name' => $display,
-                    'role' => $role,
                     'game_role' => $gameRole
                 ]
             ]);

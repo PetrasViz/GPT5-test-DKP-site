@@ -22,15 +22,6 @@ ob_start();
         <input type="text" name="display_name" value="<?= htmlspecialchars($values['display_name'] ?? '') ?>" required>
     </label>
     <span class="error" data-error="display_name" style="color:red"><?= htmlspecialchars($errors['display_name'] ?? '') ?></span><br>
-    <label>Role:
-        <select name="role">
-            <option value="guild_member" <?= ($values['role'] ?? '') === 'guild_member' ? 'selected' : '' ?>>Guild Member</option>
-            <option value="guild_advisor" <?= ($values['role'] ?? '') === 'guild_advisor' ? 'selected' : '' ?>>Guild Advisor</option>
-            <option value="guild_leader" <?= ($values['role'] ?? '') === 'guild_leader' ? 'selected' : '' ?>>Guild Leader</option>
-            <option value="admin" <?= ($values['role'] ?? '') === 'admin' ? 'selected' : '' ?>>Admin</option>
-        </select>
-    </label>
-    <span class="error" data-error="role" style="color:red"><?= htmlspecialchars($errors['role'] ?? '') ?></span><br>
     <label>In-game Role:
         <select name="game_role">
             <option value="tank" <?= ($values['game_role'] ?? '') === 'tank' ? 'selected' : '' ?>>Tank</option>
@@ -46,7 +37,7 @@ ob_start();
 <script>
 document.addEventListener('DOMContentLoaded', function () {
     const form = document.getElementById('registerForm');
-    const fields = ['guild', 'email', 'password', 'display_name', 'role', 'game_role'];
+    const fields = ['guild', 'email', 'password', 'display_name', 'game_role'];
 
     const validateField = (field) => {
         const input = form[field];
