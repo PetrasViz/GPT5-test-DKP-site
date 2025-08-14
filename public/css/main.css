@@ -4,6 +4,8 @@
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
+    background-color: #fff;
+    color: #000;
 }
 
 .site-nav {
@@ -15,6 +17,13 @@
     color: #fff;
     margin-right: 0.5rem;
     text-decoration: none;
+}
+
+.site-nav a:focus,
+.site-nav a:hover {
+    outline: 2px solid #fff;
+    outline-offset: 2px;
+    text-decoration: underline;
 }
 
 .site-nav a.active {
@@ -29,4 +38,24 @@
     text-align: center;
     padding: 1rem;
     background-color: #f4f4f4;
+}
+
+button {
+    background-color: #0069d9;
+    color: #fff;
+    border: none;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+}
+
+button:hover,
+button:focus {
+    background-color: #0053ba;
+}
+
+button:focus,
+input:focus,
+select:focus {
+    outline: 2px solid #000;
+    outline-offset: 2px;
 }

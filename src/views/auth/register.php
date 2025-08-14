@@ -6,31 +6,31 @@ ob_start();
 <h1>Register</h1>
 <form method="post" action="/register" id="registerForm" novalidate>
     <?= \App\Helpers\Csrf::inputField() ?>
-    <label>Guild:
-        <input type="text" name="guild" value="<?= htmlspecialchars($values['guild'] ?? '') ?>" required>
-    </label>
+    <label for="register-guild">Guild:</label>
+    <input type="text" id="register-guild" name="guild" value="<?= htmlspecialchars($values['guild'] ?? '') ?>" required>
     <span class="error" data-error="guild" style="color:red"><?= htmlspecialchars($errors['guild'] ?? '') ?></span><br>
-    <label>Email:
-        <input type="email" name="email" value="<?= htmlspecialchars($values['email'] ?? '') ?>" required>
-    </label>
+
+    <label for="register-email">Email:</label>
+    <input type="email" id="register-email" name="email" value="<?= htmlspecialchars($values['email'] ?? '') ?>" required>
     <span class="error" data-error="email" style="color:red"><?= htmlspecialchars($errors['email'] ?? '') ?></span><br>
-    <label>Password:
-        <input type="password" name="password" required>
-    </label>
+
+    <label for="register-password">Password:</label>
+    <input type="password" id="register-password" name="password" required>
     <span class="error" data-error="password" style="color:red"><?= htmlspecialchars($errors['password'] ?? '') ?></span><br>
-    <label>Display Name:
-        <input type="text" name="display_name" value="<?= htmlspecialchars($values['display_name'] ?? '') ?>" required>
-    </label>
+
+    <label for="register-display-name">Display Name:</label>
+    <input type="text" id="register-display-name" name="display_name" value="<?= htmlspecialchars($values['display_name'] ?? '') ?>" required>
     <span class="error" data-error="display_name" style="color:red"><?= htmlspecialchars($errors['display_name'] ?? '') ?></span><br>
-    <label>In-game Role:
-        <select name="game_role">
-            <option value="tank" <?= ($values['game_role'] ?? '') === 'tank' ? 'selected' : '' ?>>Tank</option>
-            <option value="dps" <?= ($values['game_role'] ?? '') === 'dps' ? 'selected' : '' ?>>DPS</option>
-            <option value="ranged dps" <?= ($values['game_role'] ?? '') === 'ranged dps' ? 'selected' : '' ?>>Ranged DPS</option>
-            <option value="healer" <?= ($values['game_role'] ?? '') === 'healer' ? 'selected' : '' ?>>Healer</option>
-        </select>
-    </label>
+
+    <label for="register-game-role">In-game Role:</label>
+    <select id="register-game-role" name="game_role">
+        <option value="tank" <?= ($values['game_role'] ?? '') === 'tank' ? 'selected' : '' ?>>Tank</option>
+        <option value="dps" <?= ($values['game_role'] ?? '') === 'dps' ? 'selected' : '' ?>>DPS</option>
+        <option value="ranged dps" <?= ($values['game_role'] ?? '') === 'ranged dps' ? 'selected' : '' ?>>Ranged DPS</option>
+        <option value="healer" <?= ($values['game_role'] ?? '') === 'healer' ? 'selected' : '' ?>>Healer</option>
+    </select>
     <span class="error" data-error="game_role" style="color:red"><?= htmlspecialchars($errors['game_role'] ?? '') ?></span><br>
+
     <button type="submit">Register</button>
 </form>
 <p><a href="/login">Back to login</a></p>

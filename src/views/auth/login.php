@@ -9,18 +9,18 @@ ob_start();
 <?php endif; ?>
 <form method="post" action="/login" id="loginForm" novalidate>
     <?= \App\Helpers\Csrf::inputField() ?>
-    <label>Guild:
-        <input type="text" name="guild" value="<?= htmlspecialchars($values['guild'] ?? '') ?>" required>
-    </label>
+    <label for="login-guild">Guild:</label>
+    <input type="text" id="login-guild" name="guild" value="<?= htmlspecialchars($values['guild'] ?? '') ?>" required>
     <span class="error" data-error="guild" style="color:red"><?= htmlspecialchars($errors['guild'] ?? '') ?></span><br>
-    <label>Email:
-        <input type="email" name="email" value="<?= htmlspecialchars($values['email'] ?? '') ?>" required>
-    </label>
+
+    <label for="login-email">Email:</label>
+    <input type="email" id="login-email" name="email" value="<?= htmlspecialchars($values['email'] ?? '') ?>" required>
     <span class="error" data-error="email" style="color:red"><?= htmlspecialchars($errors['email'] ?? '') ?></span><br>
-    <label>Password:
-        <input type="password" name="password" required>
-    </label>
+
+    <label for="login-password">Password:</label>
+    <input type="password" id="login-password" name="password" required>
     <span class="error" data-error="password" style="color:red"><?= htmlspecialchars($errors['password'] ?? '') ?></span><br>
+
     <button type="submit">Login</button>
 </form>
 <p><a href="/register">Register</a> | <a href="/forgot">Forgot password?</a></p>
