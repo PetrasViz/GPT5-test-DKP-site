@@ -1,9 +1,10 @@
-<!DOCTYPE html>
-<html>
-<head><title>Event History</title></head>
-<body>
+<?php
+$title = 'Event History';
+$currentPage = 'event-history';
+ob_start();
+?>
 <h1>Event History</h1>
 <p>Past events will be listed here.</p>
-<p><a href="/">Back to home</a></p>
-</body>
-</html>
+<?php
+$content = ob_get_clean();
+include __DIR__ . '/../layouts/main.php';
