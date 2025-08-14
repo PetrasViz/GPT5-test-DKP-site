@@ -15,7 +15,8 @@ class AuthController
 
     public function showLoginForm(array $data = []): void
     {
-        $error = $data['error'] ?? null;
+        $errors = $data['errors'] ?? [];
+        $values = $data['values'] ?? [];
         include __DIR__ . '/../views/auth/login.php';
     }
 
@@ -26,9 +27,28 @@ class AuthController
             echo 'Invalid CSRF token';
             return;
         }
-        $guild = $_POST['guild'] ?? '';
-        $email = $_POST['email'] ?? '';
+        $guild = trim($_POST['guild'] ?? '');
+        $email = trim($_POST['email'] ?? '');
         $password = $_POST['password'] ?? '';
+
+        $errors = [];
+        if ($guild === '') {
+            $errors['guild'] = 'Guild is required';
+        }
+        if ($email === '') {
+            $errors['email'] = 'Email is required';
+        }
+        if ($password === '') {
+            $errors['password'] = 'Password is required';
+        }
+
+        if ($errors) {
+            $this->showLoginForm([
+                'errors' => $errors,
+                'values' => ['guild' => $guild, 'email' => $email]
+            ]);
+            return;
+        }
 
         $user = $this->auth->login($guild, $email, $password);
         if ($user) {
@@ -36,12 +56,17 @@ class AuthController
             header('Location: /');
             exit;
         }
-        $this->showLoginForm(['error' => 'Invalid credentials']);
+
+        $this->showLoginForm([
+            'errors' => ['general' => 'Invalid credentials'],
+            'values' => ['guild' => $guild, 'email' => $email]
+        ]);
     }
 
     public function showRegisterForm(array $data = []): void
     {
-        $error = $data['error'] ?? null;
+        $errors = $data['errors'] ?? [];
+        $values = $data['values'] ?? [];
         include __DIR__ . '/../views/auth/register.php';
     }
 
@@ -52,16 +77,58 @@ class AuthController
             echo 'Invalid CSRF token';
             return;
         }
-        $guild = $_POST['guild'] ?? '';
-        $email = $_POST['email'] ?? '';
+        $guild = trim($_POST['guild'] ?? '');
+        $email = trim($_POST['email'] ?? '');
         $password = $_POST['password'] ?? '';
-        $display = $_POST['display_name'] ?? '';
+        $display = trim($_POST['display_name'] ?? '');
         $role = $_POST['role'] ?? 'guild_member';
         $gameRole = $_POST['game_role'] ?? '';
 
+        $errors = [];
+        if ($guild === '') {
+            $errors['guild'] = 'Guild is required';
+        }
+        if ($email === '') {
+            $errors['email'] = 'Email is required';
+        }
+        if ($password === '') {
+            $errors['password'] = 'Password is required';
+        }
+        if ($display === '') {
+            $errors['display_name'] = 'Display name is required';
+        }
+        if ($role === '') {
+            $errors['role'] = 'Role is required';
+        }
+        if ($gameRole === '') {
+            $errors['game_role'] = 'In-game role is required';
+        }
+
+        if ($errors) {
+            $this->showRegisterForm([
+                'errors' => $errors,
+                'values' => [
+                    'guild' => $guild,
+                    'email' => $email,
+                    'display_name' => $display,
+                    'role' => $role,
+                    'game_role' => $gameRole
+                ]
+            ]);
+            return;
+        }
+
         if (!$this->auth->register($guild, $email, $password, $display, $role, $gameRole)) {
-            $error = $guild && $email && $password ? 'User already exists' : 'Please fill in all fields';
-            $this->showRegisterForm(['error' => $error]);
+            $this->showRegisterForm([
+                'errors' => ['email' => 'User already exists'],
+                'values' => [
+                    'guild' => $guild,
+                    'email' => $email,
+                    'display_name' => $display,
+                    'role' => $role,
+                    'game_role' => $gameRole
+                ]
+            ]);
             return;
         }
 

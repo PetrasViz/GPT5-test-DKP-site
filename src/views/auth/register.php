@@ -4,34 +4,78 @@ $currentPage = 'register';
 ob_start();
 ?>
 <h1>Register</h1>
-<?php if (!empty($error)): ?>
-<p style="color:red"><?= htmlspecialchars($error) ?></p>
-<?php endif; ?>
-<form method="post" action="/register">
+<form method="post" action="/register" id="registerForm" novalidate>
     <?= \App\Helpers\Csrf::inputField() ?>
-    <label>Guild: <input type="text" name="guild" required></label><br>
-    <label>Email: <input type="email" name="email" required></label><br>
-    <label>Password: <input type="password" name="password" required></label><br>
-    <label>Display Name: <input type="text" name="display_name" required></label><br>
+    <label>Guild:
+        <input type="text" name="guild" value="<?= htmlspecialchars($values['guild'] ?? '') ?>" required>
+    </label>
+    <span class="error" data-error="guild" style="color:red"><?= htmlspecialchars($errors['guild'] ?? '') ?></span><br>
+    <label>Email:
+        <input type="email" name="email" value="<?= htmlspecialchars($values['email'] ?? '') ?>" required>
+    </label>
+    <span class="error" data-error="email" style="color:red"><?= htmlspecialchars($errors['email'] ?? '') ?></span><br>
+    <label>Password:
+        <input type="password" name="password" required>
+    </label>
+    <span class="error" data-error="password" style="color:red"><?= htmlspecialchars($errors['password'] ?? '') ?></span><br>
+    <label>Display Name:
+        <input type="text" name="display_name" value="<?= htmlspecialchars($values['display_name'] ?? '') ?>" required>
+    </label>
+    <span class="error" data-error="display_name" style="color:red"><?= htmlspecialchars($errors['display_name'] ?? '') ?></span><br>
     <label>Role:
         <select name="role">
-            <option value="guild_member">Guild Member</option>
-            <option value="guild_advisor">Guild Advisor</option>
-            <option value="guild_leader">Guild Leader</option>
-            <option value="admin">Admin</option>
+            <option value="guild_member" <?= ($values['role'] ?? '') === 'guild_member' ? 'selected' : '' ?>>Guild Member</option>
+            <option value="guild_advisor" <?= ($values['role'] ?? '') === 'guild_advisor' ? 'selected' : '' ?>>Guild Advisor</option>
+            <option value="guild_leader" <?= ($values['role'] ?? '') === 'guild_leader' ? 'selected' : '' ?>>Guild Leader</option>
+            <option value="admin" <?= ($values['role'] ?? '') === 'admin' ? 'selected' : '' ?>>Admin</option>
         </select>
-    </label><br>
+    </label>
+    <span class="error" data-error="role" style="color:red"><?= htmlspecialchars($errors['role'] ?? '') ?></span><br>
     <label>In-game Role:
         <select name="game_role">
-            <option value="tank">Tank</option>
-            <option value="dps">DPS</option>
-            <option value="ranged dps">Ranged DPS</option>
-            <option value="healer">Healer</option>
+            <option value="tank" <?= ($values['game_role'] ?? '') === 'tank' ? 'selected' : '' ?>>Tank</option>
+            <option value="dps" <?= ($values['game_role'] ?? '') === 'dps' ? 'selected' : '' ?>>DPS</option>
+            <option value="ranged dps" <?= ($values['game_role'] ?? '') === 'ranged dps' ? 'selected' : '' ?>>Ranged DPS</option>
+            <option value="healer" <?= ($values['game_role'] ?? '') === 'healer' ? 'selected' : '' ?>>Healer</option>
         </select>
-    </label><br>
+    </label>
+    <span class="error" data-error="game_role" style="color:red"><?= htmlspecialchars($errors['game_role'] ?? '') ?></span><br>
     <button type="submit">Register</button>
 </form>
 <p><a href="/login">Back to login</a></p>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const form = document.getElementById('registerForm');
+    const fields = ['guild', 'email', 'password', 'display_name', 'role', 'game_role'];
+
+    const validateField = (field) => {
+        const input = form[field];
+        const errorElem = form.querySelector('[data-error="' + field + '"]');
+        if (!input.value.trim()) {
+            errorElem.textContent = 'This field is required';
+            return false;
+        }
+        errorElem.textContent = '';
+        return true;
+    };
+
+    fields.forEach(field => {
+        form[field].addEventListener('input', () => validateField(field));
+    });
+
+    form.addEventListener('submit', function (e) {
+        let valid = true;
+        fields.forEach(field => {
+            if (!validateField(field)) {
+                valid = false;
+            }
+        });
+        if (!valid) {
+            e.preventDefault();
+        }
+    });
+});
+</script>
 <?php
 $content = ob_get_clean();
 include __DIR__ . '/../layouts/main.php';
