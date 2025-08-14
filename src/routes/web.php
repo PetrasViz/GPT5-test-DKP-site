@@ -22,9 +22,9 @@ return [
         'GET' => [$auth, 'logout'],
     ],
     '/auctions' => [
-        'GET' => function () use ($requireLogin) {
+        'GET' => function () use ($requireLogin, $auction) {
             $requireLogin();
-            include __DIR__ . '/../views/auctions/index.php';
+            $auction->index();
         },
     ],
     '/auction-history' => [
@@ -34,9 +34,9 @@ return [
         },
     ],
     '/event-history' => [
-        'GET' => function () use ($requireLogin) {
+        'GET' => function () use ($requireLogin, $event) {
             $requireLogin();
-            include __DIR__ . '/../views/events/history.php';
+            $event->history();
         },
     ],
     '/profile' => [
@@ -50,13 +50,13 @@ return [
         },
     ],
     '/management' => [
-        'GET' => function () use ($requireLogin, $user) {
+        'GET' => function () use ($requireLogin, $user, $management) {
             $requireLogin();
             if ($user['role'] === 'guild_member') {
                 http_response_code(403);
                 echo 'Forbidden';
             } else {
-                include __DIR__ . '/../views/management/index.php';
+                $management->index();
             }
         },
     ],
