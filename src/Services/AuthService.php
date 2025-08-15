@@ -14,11 +14,18 @@ class AuthService
 
     public function login(string $email, string $password): ?array
     {
-        $user = $this->users->findByEmail($email);
+        try {
+            $user = $this->users->findByEmail($email);
+        } catch (\PDOException $e) {
+            // Gracefully handle database errors during login
+            return null;
+        }
+
         if ($user && password_verify($password, $user['password'])) {
             unset($user['password']);
             return $user + ['email' => $email];
         }
+
         return null;
     }
 
