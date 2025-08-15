@@ -20,13 +20,12 @@ class AuthServiceTest extends TestCase
 
     public function testLoginReturnsUserOnValidCredentials(): void
     {
-        $guild = 'guild';
         $email = 'user@example.com';
         $password = 'secret';
         $hash = password_hash($password, PASSWORD_DEFAULT);
 
         $this->users->method('findByEmail')
-            ->with($guild, $email)
+            ->with($email)
             ->willReturn([
                 'password' => $hash,
                 'display_name' => 'User',
@@ -34,29 +33,27 @@ class AuthServiceTest extends TestCase
                 'game_role' => 'mage'
             ]);
 
-        $result = $this->auth->login($guild, $email, $password);
+        $result = $this->auth->login($email, $password);
 
         $this->assertSame('User', $result['display_name']);
         $this->assertSame($email, $result['email']);
-        $this->assertSame($guild, $result['guild']);
+        $this->assertArrayNotHasKey('guild', $result);
     }
 
     public function testLoginReturnsNullWithInvalidCredentials(): void
     {
-        $guild = 'guild';
         $email = 'user@example.com';
         $password = 'secret';
 
         $this->users->method('findByEmail')
-            ->with($guild, $email)
+            ->with($email)
             ->willReturn(null);
 
-        $this->assertNull($this->auth->login($guild, $email, $password));
+        $this->assertNull($this->auth->login($email, $password));
     }
 
     public function testRegisterCreatesUserWhenValid(): void
     {
-        $guild = 'guild';
         $email = 'user@example.com';
         $password = 'secret';
         $display = 'User';
@@ -65,13 +62,12 @@ class AuthServiceTest extends TestCase
 
         $this->users->expects($this->once())
             ->method('findByEmail')
-            ->with($guild, $email)
+            ->with($email)
             ->willReturn(null);
 
         $this->users->expects($this->once())
             ->method('create')
             ->with(
-                $guild,
                 $email,
                 $this->callback(fn($hash) => password_verify($password, $hash)),
                 $display,
@@ -79,12 +75,11 @@ class AuthServiceTest extends TestCase
                 $gameRole
             );
 
-        $this->assertTrue($this->auth->register($guild, $email, $password, $display, $role, $gameRole));
+        $this->assertTrue($this->auth->register($email, $password, $display, $role, $gameRole));
     }
 
     public function testRegisterFailsWhenUserExists(): void
     {
-        $guild = 'guild';
         $email = 'user@example.com';
         $password = 'secret';
         $display = 'User';
@@ -93,13 +88,13 @@ class AuthServiceTest extends TestCase
 
         $this->users->expects($this->once())
             ->method('findByEmail')
-            ->with($guild, $email)
+            ->with($email)
             ->willReturn(['password' => 'hash']);
 
         $this->users->expects($this->never())
             ->method('create');
 
-        $this->assertFalse($this->auth->register($guild, $email, $password, $display, $role, $gameRole));
+        $this->assertFalse($this->auth->register($email, $password, $display, $role, $gameRole));
     }
 }
 

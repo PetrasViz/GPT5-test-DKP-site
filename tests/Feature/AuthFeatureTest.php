@@ -35,29 +35,25 @@ class AuthFeatureTest extends TestCase
 
     public function testUserCanRegisterAndLogin(): void
     {
-        $guild = 'guild';
         $email = 'user@example.com';
         $password = 'secret';
         $display = 'User';
         $role = 'guild_member';
         $gameRole = 'mage';
 
-        $this->assertTrue($this->auth->register($guild, $email, $password, $display, $role, $gameRole));
+        $this->assertTrue($this->auth->register($email, $password, $display, $role, $gameRole));
 
-        $user = $this->auth->login($guild, $email, $password);
+        $user = $this->auth->login($email, $password);
         $this->assertSame($display, $user['display_name']);
         $this->assertSame($email, $user['email']);
-        $this->assertSame($guild, $user['guild']);
     }
 
     public function testRegistrationFailsForExistingUser(): void
     {
-        $guild = 'guild';
         $email = 'user@example.com';
         $password = 'secret';
-
-        $this->assertTrue($this->auth->register($guild, $email, $password, 'User', 'guild_member', 'mage'));
-        $this->assertFalse($this->auth->register($guild, $email, $password, 'User', 'guild_member', 'mage'));
+        $this->assertTrue($this->auth->register($email, $password, 'User', 'guild_member', 'mage'));
+        $this->assertFalse($this->auth->register($email, $password, 'User', 'guild_member', 'mage'));
     }
 }
 

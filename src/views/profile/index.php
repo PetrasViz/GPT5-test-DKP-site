@@ -7,7 +7,6 @@ ob_start();
 <form method="post" action="/profile">
     <label for="profile-email">Email:</label>
     <input type="email" id="profile-email" name="email" value="<?= htmlspecialchars($user['email']) ?>" required><br>
-    <p>Guild: <?= htmlspecialchars($user['guild']) ?></p>
     <p>Role: <?= htmlspecialchars($user['role']) ?></p>
     <label for="profile-display-name">Display Name:</label>
     <input type="text" id="profile-display-name" name="display_name" value="<?= htmlspecialchars($user['display_name']) ?>" required><br>

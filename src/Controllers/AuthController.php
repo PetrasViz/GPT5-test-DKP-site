@@ -27,14 +27,10 @@ class AuthController
             echo 'Invalid CSRF token';
             return;
         }
-        $guild = trim($_POST['guild'] ?? '');
         $email = trim($_POST['email'] ?? '');
         $password = $_POST['password'] ?? '';
 
         $errors = [];
-        if ($guild === '') {
-            $errors['guild'] = 'Guild is required';
-        }
         if ($email === '') {
             $errors['email'] = 'Email is required';
         }
@@ -45,12 +41,12 @@ class AuthController
         if ($errors) {
             $this->showLoginForm([
                 'errors' => $errors,
-                'values' => ['guild' => $guild, 'email' => $email]
+                'values' => ['email' => $email]
             ]);
             return;
         }
 
-        $user = $this->auth->login($guild, $email, $password);
+        $user = $this->auth->login($email, $password);
         if ($user) {
             $_SESSION['user'] = $user;
             header('Location: /');
@@ -59,7 +55,7 @@ class AuthController
 
         $this->showLoginForm([
             'errors' => ['general' => 'Invalid credentials'],
-            'values' => ['guild' => $guild, 'email' => $email]
+            'values' => ['email' => $email]
         ]);
     }
 
@@ -77,7 +73,6 @@ class AuthController
             echo 'Invalid CSRF token';
             return;
         }
-        $guild = trim($_POST['guild'] ?? '');
         $email = trim($_POST['email'] ?? '');
         $password = $_POST['password'] ?? '';
         $display = trim($_POST['display_name'] ?? '');
@@ -85,9 +80,6 @@ class AuthController
         $gameRole = $_POST['game_role'] ?? '';
 
         $errors = [];
-        if ($guild === '') {
-            $errors['guild'] = 'Guild is required';
-        }
         if ($email === '') {
             $errors['email'] = 'Email is required';
         }
@@ -105,7 +97,6 @@ class AuthController
             $this->showRegisterForm([
                 'errors' => $errors,
                 'values' => [
-                    'guild' => $guild,
                     'email' => $email,
                     'display_name' => $display,
                     'game_role' => $gameRole
@@ -114,11 +105,10 @@ class AuthController
             return;
         }
 
-        if (!$this->auth->register($guild, $email, $password, $display, $role, $gameRole)) {
+        if (!$this->auth->register($email, $password, $display, $role, $gameRole)) {
             $this->showRegisterForm([
                 'errors' => ['email' => 'User already exists'],
                 'values' => [
-                    'guild' => $guild,
                     'email' => $email,
                     'display_name' => $display,
                     'game_role' => $gameRole
