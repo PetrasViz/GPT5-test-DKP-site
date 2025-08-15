@@ -26,7 +26,7 @@ class ProfileController
         $gameRole = $_POST['game_role'] ?? '';
 
         if ($email && $email !== $user['email']) {
-            $this->users->changeEmail($user['guild'], $user['email'], $email);
+            $this->users->changeEmail($user['email'], $email);
             $_SESSION['user']['email'] = $email;
             $user['email'] = $email;
         }
@@ -42,7 +42,7 @@ class ProfileController
         }
 
         if ($data) {
-            $this->users->update($user['guild'], $user['email'], $data);
+            $this->users->update($user['email'], $data);
         }
 
         $this->show();

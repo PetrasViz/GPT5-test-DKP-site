@@ -9,10 +9,6 @@ ob_start();
 <?php endif; ?>
 <form method="post" action="/login" id="loginForm" novalidate>
     <?= \App\Helpers\Csrf::inputField() ?>
-    <label for="login-guild">Guild:</label>
-    <input type="text" id="login-guild" name="guild" value="<?= htmlspecialchars($values['guild'] ?? '') ?>" required>
-    <span class="error" data-error="guild" style="color:red"><?= htmlspecialchars($errors['guild'] ?? '') ?></span><br>
-
     <label for="login-email">Email:</label>
     <input type="email" id="login-email" name="email" value="<?= htmlspecialchars($values['email'] ?? '') ?>" required>
     <span class="error" data-error="email" style="color:red"><?= htmlspecialchars($errors['email'] ?? '') ?></span><br>
@@ -27,7 +23,7 @@ ob_start();
 <script>
 document.addEventListener('DOMContentLoaded', function () {
     const form = document.getElementById('loginForm');
-    const fields = ['guild', 'email', 'password'];
+    const fields = ['email', 'password'];
 
     const validateField = (field) => {
         const input = form[field];

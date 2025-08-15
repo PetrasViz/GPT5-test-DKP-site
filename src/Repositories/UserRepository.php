@@ -29,7 +29,7 @@ class UserRepository
         return $this->db;
     }
 
-    public function findByEmail(string $guild, string $email): ?array
+    public function findByEmail(string $email): ?array
     {
         $stmt = $this->db()->prepare('SELECT * FROM users WHERE email = :email LIMIT 1');
         $stmt->execute(['email' => $email]);
@@ -46,7 +46,7 @@ class UserRepository
         ];
     }
 
-    public function create(string $guild, string $email, string $passwordHash, string $displayName, string $role, string $gameRole): void
+    public function create(string $email, string $passwordHash, string $displayName, string $role, string $gameRole): void
     {
         $stmt = $this->db()->prepare('INSERT INTO users (email, password_hash, display_name, role, game_role, is_active, created_at, updated_at) VALUES (:email, :password_hash, :display_name, :role, :game_role, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)');
         $stmt->execute([
@@ -58,7 +58,7 @@ class UserRepository
         ]);
     }
 
-    public function update(string $guild, string $email, array $data): void
+    public function update(string $email, array $data): void
     {
         if (empty($data)) {
             return;
@@ -75,7 +75,7 @@ class UserRepository
         $stmt->execute($data);
     }
 
-    public function changeEmail(string $guild, string $oldEmail, string $newEmail): void
+    public function changeEmail(string $oldEmail, string $newEmail): void
     {
         $stmt = $this->db()->prepare('UPDATE users SET email = :new_email, updated_at = CURRENT_TIMESTAMP WHERE email = :old_email');
         $stmt->execute([

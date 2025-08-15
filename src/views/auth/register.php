@@ -6,10 +6,6 @@ ob_start();
 <h1>Register</h1>
 <form method="post" action="/register" id="registerForm" novalidate>
     <?= \App\Helpers\Csrf::inputField() ?>
-    <label for="register-guild">Guild:</label>
-    <input type="text" id="register-guild" name="guild" value="<?= htmlspecialchars($values['guild'] ?? '') ?>" required>
-    <span class="error" data-error="guild" style="color:red"><?= htmlspecialchars($errors['guild'] ?? '') ?></span><br>
-
     <label for="register-email">Email:</label>
     <input type="email" id="register-email" name="email" value="<?= htmlspecialchars($values['email'] ?? '') ?>" required>
     <span class="error" data-error="email" style="color:red"><?= htmlspecialchars($errors['email'] ?? '') ?></span><br>
@@ -37,7 +33,7 @@ ob_start();
 <script>
 document.addEventListener('DOMContentLoaded', function () {
     const form = document.getElementById('registerForm');
-    const fields = ['guild', 'email', 'password', 'display_name', 'game_role'];
+    const fields = ['email', 'password', 'display_name', 'game_role'];
 
     const validateField = (field) => {
         const input = form[field];
