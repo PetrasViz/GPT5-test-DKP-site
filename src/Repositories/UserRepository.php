@@ -6,16 +6,32 @@ use PDO;
 
 class UserRepository
 {
-    private PDO $db;
+    /**
+     * Database connection instance.
+     * Lazily initialised to avoid unnecessary connections when the
+     * repository is constructed but not used during a request.
+     */
+    private ?PDO $db = null;
 
     public function __construct(?PDO $db = null)
     {
-        $this->db = $db ?? Database::connection();
+        $this->db = $db;
+    }
+
+    /**
+     * Retrieve (and create if necessary) the PDO connection.
+     */
+    private function db(): PDO
+    {
+        if ($this->db === null) {
+            $this->db = Database::connection();
+        }
+        return $this->db;
     }
 
     public function findByEmail(string $guild, string $email): ?array
     {
-        $stmt = $this->db->prepare('SELECT * FROM users WHERE email = :email LIMIT 1');
+        $stmt = $this->db()->prepare('SELECT * FROM users WHERE email = :email LIMIT 1');
         $stmt->execute(['email' => $email]);
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
         if (!$user) {
@@ -32,7 +48,7 @@ class UserRepository
 
     public function create(string $guild, string $email, string $passwordHash, string $displayName, string $role, string $gameRole): void
     {
-        $stmt = $this->db->prepare('INSERT INTO users (email, password_hash, display_name, role, game_role, is_active, created_at, updated_at) VALUES (:email, :password_hash, :display_name, :role, :game_role, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)');
+        $stmt = $this->db()->prepare('INSERT INTO users (email, password_hash, display_name, role, game_role, is_active, created_at, updated_at) VALUES (:email, :password_hash, :display_name, :role, :game_role, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)');
         $stmt->execute([
             'email' => $email,
             'password_hash' => $passwordHash,
@@ -55,13 +71,13 @@ class UserRepository
 
         $sql = 'UPDATE users SET ' . implode(', ', $fields) . ', updated_at = CURRENT_TIMESTAMP WHERE email = :email';
         $data['email'] = $email;
-        $stmt = $this->db->prepare($sql);
+        $stmt = $this->db()->prepare($sql);
         $stmt->execute($data);
     }
 
     public function changeEmail(string $guild, string $oldEmail, string $newEmail): void
     {
-        $stmt = $this->db->prepare('UPDATE users SET email = :new_email, updated_at = CURRENT_TIMESTAMP WHERE email = :old_email');
+        $stmt = $this->db()->prepare('UPDATE users SET email = :new_email, updated_at = CURRENT_TIMESTAMP WHERE email = :old_email');
         $stmt->execute([
             'new_email' => $newEmail,
             'old_email' => $oldEmail,
