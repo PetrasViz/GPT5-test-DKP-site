@@ -52,6 +52,18 @@ class AuthServiceTest extends TestCase
         $this->assertNull($this->auth->login($email, $password));
     }
 
+    public function testLoginHandlesDatabaseExceptionsGracefully(): void
+    {
+        $email = 'user@example.com';
+        $password = 'secret';
+
+        $this->users->method('findByEmail')
+            ->with($email)
+            ->willThrowException(new \PDOException('DB error'));
+
+        $this->assertNull($this->auth->login($email, $password));
+    }
+
     public function testRegisterCreatesUserWhenValid(): void
     {
         $email = 'user@example.com';
