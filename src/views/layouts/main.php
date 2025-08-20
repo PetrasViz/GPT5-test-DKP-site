@@ -34,11 +34,11 @@ $user = $user ?? ($_SESSION['user'] ?? null);
                 <li class="nav-item"><a class="nav-link <?= $currentPage === 'event-history' ? 'active' : '' ?>" href="/event-history">Event History</a></li>
                 <?php if ($user): ?>
                     <li class="nav-item"><a class="nav-link <?= $currentPage === 'profile' ? 'active' : '' ?>" href="/profile">Profile</a></li>
-                    <?php if (in_array($user['role'], ['admin', 'guild_leader', 'guild_advisor'])): ?>
+                    <?php if (in_array($user['role'], ['ADMIN', 'LEADER', 'ADVISOR'])): ?>
                         <li class="nav-item"><a class="nav-link <?= $currentPage === 'management' ? 'active' : '' ?>" href="/management">Management</a></li>
                     <?php endif; ?>
                     <li class="nav-item"><a class="nav-link <?= $currentPage === 'guild_register' ? 'active' : '' ?>" href="/guild/register">New Guild</a></li>
-                    <?php if ($user['role'] === 'admin'): ?>
+                    <?php if ($user['role'] === 'ADMIN'): ?>
                         <li class="nav-item"><a class="nav-link <?= $currentPage === 'guilds' ? 'active' : '' ?>" href="/guilds">Guilds</a></li>
                     <?php endif; ?>
                     <li class="nav-item"><a class="nav-link" href="/logout">Logout</a></li>

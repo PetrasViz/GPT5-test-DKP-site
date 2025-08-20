@@ -12,4 +12,4 @@ namespaced classes from `src/`.
 
 ## Roles
 
-All users register as `guild_member`. Elevated roles such as `guild_advisor`, `guild_leader`, or `admin` must be granted by an administrator after registration. A privileged user can promote members by updating their role through the management tooling or by calling `UserRepository::update` in custom workflows.
+All users register as `MEMBER`. Elevated roles such as `ADVISOR`, `LEADER`, or `ADMIN` must be granted by an administrator after registration. A privileged user can promote members by updating their role through the management tooling or by calling `UserRepository::update` in custom workflows.

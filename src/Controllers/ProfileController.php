@@ -63,7 +63,7 @@ class ProfileController
         $guildId = (int)($_POST['guild_id'] ?? 0);
         if ($guildId) {
             $this->guilds->joinGuild($user['id'], $guildId);
-            $_SESSION['user']['role'] = 'guild_member';
+            $_SESSION['user']['role'] = 'MEMBER';
         }
         header('Location: /profile');
         exit;
@@ -73,8 +73,8 @@ class ProfileController
     {
         $user = $_SESSION['user'];
         $this->guilds->leaveGuild($user['id']);
-        $this->users->update($user['email'], ['role' => 'guild_member']);
-        $_SESSION['user']['role'] = 'guild_member';
+        $this->users->update($user['email'], ['role' => 'MEMBER']);
+        $_SESSION['user']['role'] = 'MEMBER';
         header('Location: /profile');
         exit;
     }

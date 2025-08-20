@@ -77,7 +77,7 @@ class ManagementController
             exit;
         }
         $guild = $this->guilds->getGuild((int)$membership['guild_id']);
-        if ($user['role'] !== 'admin' && (int)$guild['leader_id'] !== (int)$user['id']) {
+        if ($user['role'] !== 'ADMIN' && (int)$guild['leader_id'] !== (int)$user['id']) {
             http_response_code(403);
             $_SESSION['error'] = 'Forbidden';
             header('Location: /management');
