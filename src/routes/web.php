@@ -1,5 +1,34 @@
 <?php
 
+use App\Controllers\AuthController;
+use App\Controllers\ProfileController;
+use App\Controllers\AuctionController;
+use App\Controllers\EventController;
+use App\Controllers\ManagementController;
+use App\Controllers\GuildController;
+
+// Ensure session is started so that route file can be included independently
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+// Instantiate controllers if they haven't been provided by the caller
+$auth = $auth ?? new AuthController();
+$profile = $profile ?? new ProfileController();
+$auction = $auction ?? new AuctionController();
+$event = $event ?? new EventController();
+$management = $management ?? new ManagementController();
+$guild = $guild ?? new GuildController();
+
+// Retrieve the current user and login helper if not already defined
+$user = $user ?? ($_SESSION['user'] ?? null);
+$requireLogin = $requireLogin ?? function () use ($user) {
+    if (!$user) {
+        header('Location: /login');
+        exit;
+    }
+};
+
 return [
     '/' => [
         'GET' => function () {
