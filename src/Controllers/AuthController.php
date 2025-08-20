@@ -72,7 +72,7 @@ class AuthController
         $email = trim($_POST['email'] ?? '');
         $password = $_POST['password'] ?? '';
         $display = trim($_POST['display_name'] ?? '');
-        $role = 'guild_member'; // Elevated roles must be granted by an administrator
+        $role = 'MEMBER'; // Elevated roles must be granted by an administrator
         $gameRole = $_POST['game_role'] ?? '';
         if (!Csrf::validateToken($_POST['csrf_token'] ?? '')) {
             http_response_code(400);

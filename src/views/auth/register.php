@@ -20,10 +20,10 @@ ob_start();
 
     <label for="register-game-role">In-game Role:</label>
     <select id="register-game-role" name="game_role">
-        <option value="tank" <?= ($values['game_role'] ?? '') === 'tank' ? 'selected' : '' ?>>Tank</option>
-        <option value="dps" <?= ($values['game_role'] ?? '') === 'dps' ? 'selected' : '' ?>>DPS</option>
-        <option value="ranged dps" <?= ($values['game_role'] ?? '') === 'ranged dps' ? 'selected' : '' ?>>Ranged DPS</option>
-        <option value="healer" <?= ($values['game_role'] ?? '') === 'healer' ? 'selected' : '' ?>>Healer</option>
+        <option value="TANK" <?= ($values['game_role'] ?? '') === 'TANK' ? 'selected' : '' ?>>Tank</option>
+        <option value="MELEE_DPS" <?= ($values['game_role'] ?? '') === 'MELEE_DPS' ? 'selected' : '' ?>>Melee DPS</option>
+        <option value="RANGED_DPS" <?= ($values['game_role'] ?? '') === 'RANGED_DPS' ? 'selected' : '' ?>>Ranged DPS</option>
+        <option value="HEALER" <?= ($values['game_role'] ?? '') === 'HEALER' ? 'selected' : '' ?>>Healer</option>
     </select>
     <span class="error" data-error="game_role" style="color:red"><?= htmlspecialchars($errors['game_role'] ?? '') ?></span><br>
 

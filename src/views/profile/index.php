@@ -12,8 +12,8 @@ ob_start();
     <input type="text" id="profile-display-name" name="display_name" value="<?= htmlspecialchars($user['display_name']) ?>" required><br>
     <label for="profile-game-role">In-game Role:</label>
     <select id="profile-game-role" name="game_role">
-        <?php $roles = ['tank'=>'Tank','dps'=>'DPS','ranged dps'=>'Ranged DPS','healer'=>'Healer']; foreach($roles as $value => $label): ?>
-        <option value="<?= $value ?>"<?= $user['game_role']===$value?' selected':'' ?>><?= $label ?></option>
+        <?php $roles = ['TANK'=>'Tank','MELEE_DPS'=>'Melee DPS','RANGED_DPS'=>'Ranged DPS','HEALER'=>'Healer']; foreach($roles as $value => $label): ?>
+        <option value="<?= $value ?>"<?= $user['game_role'] === $value ? ' selected' : '' ?>><?= $label ?></option>
         <?php endforeach; ?>
     </select><br>
     <button type="submit">Save</button>

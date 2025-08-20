@@ -34,7 +34,7 @@ return [
     '/guilds' => [
         'GET' => function () use ($requireLogin, $guild, $user) {
             $requireLogin();
-            if ($user['role'] !== 'admin') {
+            if ($user['role'] !== 'ADMIN') {
                 http_response_code(403);
                 $message = 'Forbidden';
                 include __DIR__ . '/../views/errors/error.php';
@@ -86,7 +86,7 @@ return [
     '/management' => [
         'GET' => function () use ($requireLogin, $user, $management) {
             $requireLogin();
-            if (!in_array($user['role'], ['admin', 'guild_leader', 'guild_advisor'])) {
+            if (!in_array($user['role'], ['ADMIN', 'LEADER', 'ADVISOR'])) {
                 http_response_code(403);
                 $message = 'Forbidden';
                 include __DIR__ . '/../views/errors/error.php';
@@ -98,7 +98,7 @@ return [
     '/management/motd' => [
         'POST' => function () use ($requireLogin, $user, $management) {
             $requireLogin();
-            if ($user['role'] === 'guild_member') {
+            if ($user['role'] === 'MEMBER') {
                 http_response_code(403);
                 $message = 'Forbidden';
                 include __DIR__ . '/../views/errors/error.php';

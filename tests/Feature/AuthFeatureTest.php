@@ -38,8 +38,8 @@ class AuthFeatureTest extends TestCase
         $email = 'user@example.com';
         $password = 'secret';
         $display = 'User';
-        $role = 'guild_member';
-        $gameRole = 'mage';
+        $role = 'MEMBER';
+        $gameRole = 'HEALER';
 
         $this->assertTrue($this->auth->register($email, $password, $display, $gameRole, $role));
 
@@ -52,8 +52,8 @@ class AuthFeatureTest extends TestCase
     {
         $email = 'user@example.com';
         $password = 'secret';
-        $this->assertTrue($this->auth->register($email, $password, 'User', 'mage', 'guild_member'));
-        $this->assertFalse($this->auth->register($email, $password, 'User', 'mage', 'guild_member'));
+        $this->assertTrue($this->auth->register($email, $password, 'User', 'HEALER', 'MEMBER'));
+        $this->assertFalse($this->auth->register($email, $password, 'User', 'HEALER', 'MEMBER'));
     }
 }
 

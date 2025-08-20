@@ -30,8 +30,8 @@ class AuthServiceTest extends TestCase
                 'id' => 1,
                 'password' => $hash,
                 'display_name' => 'User',
-                'role' => 'admin',
-                'game_role' => 'mage'
+                'role' => 'ADMIN',
+                'game_role' => 'HEALER'
             ]);
 
         $result = $this->auth->login($email, $password);
@@ -71,8 +71,8 @@ class AuthServiceTest extends TestCase
         $email = 'user@example.com';
         $password = 'secret';
         $display = 'User';
-        $role = 'guild_member';
-        $gameRole = 'mage';
+        $role = 'MEMBER';
+        $gameRole = 'HEALER';
 
         $this->users->expects($this->once())
             ->method('findByEmail')
@@ -97,7 +97,7 @@ class AuthServiceTest extends TestCase
         $email = 'new@example.com';
         $password = 'secret';
         $display = 'New';
-        $gameRole = 'mage';
+        $gameRole = 'HEALER';
 
         $this->users->expects($this->once())
             ->method('findByEmail')
@@ -110,7 +110,7 @@ class AuthServiceTest extends TestCase
                 $email,
                 $this->callback(fn($hash) => password_verify($password, $hash)),
                 $display,
-                'guild_member',
+                'MEMBER',
                 $gameRole
             );
 
@@ -122,8 +122,8 @@ class AuthServiceTest extends TestCase
         $email = 'user@example.com';
         $password = 'secret';
         $display = 'User';
-        $role = 'guild_member';
-        $gameRole = 'mage';
+        $role = 'MEMBER';
+        $gameRole = 'HEALER';
 
         $this->users->expects($this->once())
             ->method('findByEmail')
