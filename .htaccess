@@ -2,11 +2,11 @@ Options -Indexes
 RewriteEngine On
 RewriteBase /
 
-# Serve existing files/directories as-is
+# If request is for an existing file/dir in root, serve it
 RewriteCond %{REQUEST_FILENAME} -f [OR]
 RewriteCond %{REQUEST_FILENAME} -d
 RewriteRule ^ - [L]
 
-# Internally route everything else to /public
+# Internally rewrite anything else into /public
 RewriteCond %{REQUEST_URI} !^/public/
 RewriteRule ^(.*)$ public/$1 [L]
