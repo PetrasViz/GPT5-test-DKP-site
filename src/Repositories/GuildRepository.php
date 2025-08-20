@@ -72,4 +72,44 @@ class GuildRepository
         $stmt = $this->db()->prepare('UPDATE guilds SET leader_id = :leader, last_leader_transfer_at = CURRENT_TIMESTAMP, updated_at = CURRENT_TIMESTAMP WHERE id = :id');
         $stmt->execute(['leader' => $newLeaderId, 'id' => $guildId]);
     }
+
+    /**
+     * Fetch all guilds. Used by administrators to review guild listings.
+     *
+     * @return array<int, array<string, mixed>>
+     */
+    public function getAllGuilds(): array
+    {
+        $stmt = $this->db()->query('SELECT * FROM guilds');
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    /**
+     * Mark a guild as blocked. The schema is expected to contain a `blocked`
+     * column. This repository does not enforce the schema but issues the SQL
+     * update so higher layers can flag a guild as suspended.
+     */
+    public function blockGuild(int $guildId): void
+    {
+        $stmt = $this->db()->prepare('UPDATE guilds SET blocked = 1, updated_at = CURRENT_TIMESTAMP WHERE id = :id');
+        $stmt->execute(['id' => $guildId]);
+    }
+
+    /**
+     * Ban a guild permanently.
+     */
+    public function banGuild(int $guildId): void
+    {
+        $stmt = $this->db()->prepare('UPDATE guilds SET banned = 1, updated_at = CURRENT_TIMESTAMP WHERE id = :id');
+        $stmt->execute(['id' => $guildId]);
+    }
+
+    /**
+     * Remove a guild entirely.
+     */
+    public function deleteGuild(int $guildId): void
+    {
+        $stmt = $this->db()->prepare('DELETE FROM guilds WHERE id = :id');
+        $stmt->execute(['id' => $guildId]);
+    }
 }

@@ -37,6 +37,10 @@ $user = $user ?? ($_SESSION['user'] ?? null);
                     <?php if ($user['role'] !== 'guild_member'): ?>
                         <li class="nav-item"><a class="nav-link <?= $currentPage === 'management' ? 'active' : '' ?>" href="/management">Management</a></li>
                     <?php endif; ?>
+                    <li class="nav-item"><a class="nav-link <?= $currentPage === 'guild_register' ? 'active' : '' ?>" href="/guild/register">New Guild</a></li>
+                    <?php if ($user['role'] === 'admin'): ?>
+                        <li class="nav-item"><a class="nav-link <?= $currentPage === 'guilds' ? 'active' : '' ?>" href="/guilds">Guilds</a></li>
+                    <?php endif; ?>
                     <li class="nav-item"><a class="nav-link" href="/logout">Logout</a></li>
                 <?php else: ?>
                     <li class="nav-item"><a class="nav-link <?= $currentPage === 'login' ? 'active' : '' ?>" href="/login">Login</a></li>
