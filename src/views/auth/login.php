@@ -4,9 +4,6 @@ $currentPage = 'login';
 ob_start();
 ?>
 <h1>Login</h1>
-<?php if (!empty($errors['general'])): ?>
-<p style="color:red"><?= htmlspecialchars($errors['general']) ?></p>
-<?php endif; ?>
 <form method="post" action="/login" id="loginForm" novalidate>
     <?= \App\Helpers\Csrf::inputField() ?>
     <label for="login-email">Email:</label>

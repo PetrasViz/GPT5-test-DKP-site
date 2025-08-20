@@ -35,5 +35,6 @@ if (isset($routes[$uri][$method])) {
     $action();
 } else {
     http_response_code(404);
-    echo 'Not Found';
+    $message = 'Not Found';
+    include __DIR__ . '/../src/views/errors/error.php';
 }

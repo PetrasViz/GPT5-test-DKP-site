@@ -30,7 +30,8 @@ class GuildController
     {
         if (!Csrf::validateToken($_POST['csrf_token'] ?? '')) {
             http_response_code(400);
-            echo 'Invalid CSRF token';
+            $_SESSION['error'] = 'Invalid CSRF token';
+            $this->showRegisterForm();
             return;
         }
         $name = trim($_POST['name'] ?? '');
@@ -41,7 +42,10 @@ class GuildController
         }
         if ($leaderId === 0) {
             http_response_code(403);
-            echo 'Unauthorized';
+            $_SESSION['error'] = 'Unauthorized';
+            $this->showRegisterForm([
+                'values' => ['name' => $name]
+            ]);
             return;
         }
         if ($errors) {
