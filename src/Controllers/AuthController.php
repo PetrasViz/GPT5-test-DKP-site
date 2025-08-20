@@ -22,12 +22,13 @@ class AuthController
 
     public function login(): void
     {
+        $email = trim($_POST['email'] ?? '');
         if (!Csrf::validateToken($_POST['csrf_token'] ?? '')) {
             http_response_code(400);
-            echo 'Invalid CSRF token';
+            $_SESSION['error'] = 'Invalid CSRF token';
+            $this->showLoginForm(['values' => ['email' => $email]]);
             return;
         }
-        $email = trim($_POST['email'] ?? '');
         $password = $_POST['password'] ?? '';
 
         $errors = [];
@@ -53,8 +54,8 @@ class AuthController
             exit;
         }
 
+        $_SESSION['error'] = 'Invalid credentials';
         $this->showLoginForm([
-            'errors' => ['general' => 'Invalid credentials'],
             'values' => ['email' => $email]
         ]);
     }
@@ -68,16 +69,23 @@ class AuthController
 
     public function register(): void
     {
-        if (!Csrf::validateToken($_POST['csrf_token'] ?? '')) {
-            http_response_code(400);
-            echo 'Invalid CSRF token';
-            return;
-        }
         $email = trim($_POST['email'] ?? '');
         $password = $_POST['password'] ?? '';
         $display = trim($_POST['display_name'] ?? '');
         $role = 'guild_member'; // Elevated roles must be granted by an administrator
         $gameRole = $_POST['game_role'] ?? '';
+        if (!Csrf::validateToken($_POST['csrf_token'] ?? '')) {
+            http_response_code(400);
+            $_SESSION['error'] = 'Invalid CSRF token';
+            $this->showRegisterForm([
+                'values' => [
+                    'email' => $email,
+                    'display_name' => $display,
+                    'game_role' => $gameRole
+                ]
+            ]);
+            return;
+        }
 
         $errors = [];
         if ($email === '') {
@@ -117,7 +125,9 @@ class AuthController
             return;
         }
 
-        echo 'Registration successful. <a href="/login">Login</a>';
+        $_SESSION['success'] = 'Registration successful. Please login.';
+        header('Location: /login');
+        exit;
     }
 
     public function logout(): void
@@ -137,7 +147,8 @@ class AuthController
     {
         if (!Csrf::validateToken($_POST['csrf_token'] ?? '')) {
             http_response_code(400);
-            echo 'Invalid CSRF token';
+            $_SESSION['error'] = 'Invalid CSRF token';
+            $this->showForgotForm();
             return;
         }
         $email = $_POST['email'] ?? '';

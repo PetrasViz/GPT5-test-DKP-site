@@ -36,7 +36,8 @@ return [
             $requireLogin();
             if ($user['role'] !== 'admin') {
                 http_response_code(403);
-                echo 'Forbidden';
+                $message = 'Forbidden';
+                include __DIR__ . '/../views/errors/error.php';
             } else {
                 $guild->index();
             }
@@ -75,7 +76,8 @@ return [
             $requireLogin();
             if ($user['role'] === 'guild_member') {
                 http_response_code(403);
-                echo 'Forbidden';
+                $message = 'Forbidden';
+                include __DIR__ . '/../views/errors/error.php';
             } else {
                 $management->index();
             }
