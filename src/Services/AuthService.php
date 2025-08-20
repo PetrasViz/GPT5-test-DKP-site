@@ -29,7 +29,7 @@ class AuthService
         return null;
     }
 
-    public function register(string $email, string $password, string $displayName, string $role, string $gameRole): bool
+    public function register(string $email, string $password, string $displayName, string $gameRole, string $role = 'guild_member'): bool
     {
         if (!$email || !$password || $this->users->findByEmail($email)) {
             return false;

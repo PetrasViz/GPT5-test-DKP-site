@@ -87,7 +87,32 @@ class AuthServiceTest extends TestCase
                 $gameRole
             );
 
-        $this->assertTrue($this->auth->register($email, $password, $display, $role, $gameRole));
+        $this->assertTrue($this->auth->register($email, $password, $display, $gameRole, $role));
+    }
+
+    public function testRegisterDefaultsToMemberRole(): void
+    {
+        $email = 'new@example.com';
+        $password = 'secret';
+        $display = 'New';
+        $gameRole = 'mage';
+
+        $this->users->expects($this->once())
+            ->method('findByEmail')
+            ->with($email)
+            ->willReturn(null);
+
+        $this->users->expects($this->once())
+            ->method('create')
+            ->with(
+                $email,
+                $this->callback(fn($hash) => password_verify($password, $hash)),
+                $display,
+                'guild_member',
+                $gameRole
+            );
+
+        $this->assertTrue($this->auth->register($email, $password, $display, $gameRole));
     }
 
     public function testRegisterFailsWhenUserExists(): void
@@ -106,7 +131,7 @@ class AuthServiceTest extends TestCase
         $this->users->expects($this->never())
             ->method('create');
 
-        $this->assertFalse($this->auth->register($email, $password, $display, $role, $gameRole));
+        $this->assertFalse($this->auth->register($email, $password, $display, $gameRole, $role));
     }
 }
 

@@ -105,7 +105,7 @@ class AuthController
             return;
         }
 
-        if (!$this->auth->register($email, $password, $display, $role, $gameRole)) {
+        if (!$this->auth->register($email, $password, $display, $gameRole, $role)) {
             $this->showRegisterForm([
                 'errors' => ['email' => 'User already exists'],
                 'values' => [

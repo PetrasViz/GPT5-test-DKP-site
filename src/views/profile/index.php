@@ -18,6 +18,30 @@ ob_start();
     </select><br>
     <button type="submit">Save</button>
 </form>
+
+<h2>Guilds</h2>
+<?php if ($currentGuild): ?>
+    <p>Current Guild: <?= htmlspecialchars($currentGuild['name']) ?></p>
+    <form method="post" action="/profile/leave" style="display:inline">
+        <button type="submit">Leave Guild</button>
+    </form>
+<?php else: ?>
+    <p>Not currently in a guild.</p>
+<?php endif; ?>
+
+<ul>
+<?php foreach ($guilds as $g): ?>
+    <li>
+        <?= htmlspecialchars($g['name']) ?>
+        <?php if (!$currentGuild || $currentGuild['id'] !== $g['id']): ?>
+            <form method="post" action="/profile/join" style="display:inline">
+                <input type="hidden" name="guild_id" value="<?= $g['id'] ?>">
+                <button type="submit">Join</button>
+            </form>
+        <?php endif; ?>
+    </li>
+<?php endforeach; ?>
+</ul>
 <?php
 $content = ob_get_clean();
 include __DIR__ . '/../layouts/main.php';
