@@ -86,7 +86,7 @@ return [
     '/management' => [
         'GET' => function () use ($requireLogin, $user, $management) {
             $requireLogin();
-            if ($user['role'] === 'guild_member') {
+            if (!in_array($user['role'], ['admin', 'guild_leader', 'guild_advisor'])) {
                 http_response_code(403);
                 $message = 'Forbidden';
                 include __DIR__ . '/../views/errors/error.php';
