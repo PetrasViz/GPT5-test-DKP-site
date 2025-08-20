@@ -1,5 +1,8 @@
-ewriteEngine on
-RewriteCond %{HTTP_HOST} ^dimgrey-reindeer-851621.hostingersite.com$ [NC,OR]
-RewriteCond %{HTTP_HOST} ^dimgrey-reindeer-851621.hostingersite.com$
-RewriteCond %{REQUEST_URI} !public/
-RewriteRule (.*) /public/$1 [L]
+# Redirect everything from root to /public
+RewriteEngine On
+
+# Don’t apply redirect if already inside /public
+RewriteCond %{REQUEST_URI} !^/public/
+
+# Redirect all requests to /public while keeping the URI
+RewriteRule ^(.*)$ /public/$1 [L]
