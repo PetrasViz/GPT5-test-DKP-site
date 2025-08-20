@@ -120,4 +120,26 @@ class GuildServiceTest extends TestCase
 
         $service->setMotd(3, 'Be brave');
     }
+
+    public function testGetActiveMembershipHandlesDatabaseExceptions(): void
+    {
+        $repo = $this->createMock(GuildRepository::class);
+        $service = new GuildService($repo);
+
+        $repo->method('getActiveMembership')
+            ->willThrowException(new \PDOException('DB error'));
+
+        $this->assertNull($service->getActiveMembership(1));
+    }
+
+    public function testGetGuildHandlesDatabaseExceptions(): void
+    {
+        $repo = $this->createMock(GuildRepository::class);
+        $service = new GuildService($repo);
+
+        $repo->method('getGuild')
+            ->willThrowException(new \PDOException('DB error'));
+
+        $this->assertNull($service->getGuild(1));
+    }
 }

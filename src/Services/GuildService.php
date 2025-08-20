@@ -56,12 +56,20 @@ class GuildService
 
     public function getActiveMembership(int $userId): ?array
     {
-        return $this->guilds->getActiveMembership($userId);
+        try {
+            return $this->guilds->getActiveMembership($userId);
+        } catch (\PDOException $e) {
+            return null;
+        }
     }
 
     public function getGuild(int $id): ?array
     {
-        return $this->guilds->getGuild($id);
+        try {
+            return $this->guilds->getGuild($id);
+        } catch (\PDOException $e) {
+            return null;
+        }
     }
 
     public function setMotd(int $guildId, string $motd): void
