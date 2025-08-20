@@ -8,12 +8,14 @@ use App\Controllers\ProfileController;
 use App\Controllers\AuctionController;
 use App\Controllers\EventController;
 use App\Controllers\ManagementController;
+use App\Controllers\GuildController;
 
 $auth = new AuthController();
 $profile = new ProfileController();
 $auction = new AuctionController();
 $event = new EventController();
 $management = new ManagementController();
+$guild = new GuildController();
 
 $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 $method = $_SERVER['REQUEST_METHOD'];

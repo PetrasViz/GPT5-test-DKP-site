@@ -51,4 +51,61 @@ class GuildService
         $this->guilds->updateLeader($guildId, $newLeaderId);
         return true;
     }
+
+    /**
+     * Return all guilds for administrative review.
+     */
+    public function listGuilds(): array
+    {
+        return $this->guilds->getAllGuilds();
+    }
+
+    /**
+     * Allow an administrator to join a guild either as a regular member or as
+     * the leader. This bypasses the normal leader and cooldown checks.
+     */
+    public function adminJoinGuild(int $guildId, int $userId, bool $asLeader = false): bool
+    {
+        $active = $this->guilds->getActiveMembership($userId);
+        if ($active) {
+            return false;
+        }
+        $this->guilds->addMember($guildId, $userId);
+        if ($asLeader) {
+            $this->guilds->updateLeader($guildId, $userId);
+        }
+        return true;
+    }
+
+    /**
+     * Block a guild from performing operations.
+     */
+    public function blockGuild(int $guildId): void
+    {
+        $this->guilds->blockGuild($guildId);
+    }
+
+    /**
+     * Ban a guild.
+     */
+    public function banGuild(int $guildId): void
+    {
+        $this->guilds->banGuild($guildId);
+    }
+
+    /**
+     * Remove a guild entirely.
+     */
+    public function removeGuild(int $guildId): void
+    {
+        $this->guilds->deleteGuild($guildId);
+    }
+
+    /**
+     * Change the leader of a guild immediately.
+     */
+    public function changeLeader(int $guildId, int $newLeaderId): void
+    {
+        $this->guilds->updateLeader($guildId, $newLeaderId);
+    }
 }

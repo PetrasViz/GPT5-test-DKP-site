@@ -21,6 +21,27 @@ return [
     '/logout' => [
         'GET' => [$auth, 'logout'],
     ],
+    '/guild/register' => [
+        'GET' => function () use ($requireLogin, $guild) {
+            $requireLogin();
+            $guild->showRegisterForm();
+        },
+        'POST' => function () use ($requireLogin, $guild) {
+            $requireLogin();
+            $guild->register();
+        },
+    ],
+    '/guilds' => [
+        'GET' => function () use ($requireLogin, $guild, $user) {
+            $requireLogin();
+            if ($user['role'] !== 'admin') {
+                http_response_code(403);
+                echo 'Forbidden';
+            } else {
+                $guild->index();
+            }
+        },
+    ],
     '/auctions' => [
         'GET' => function () use ($requireLogin, $auction) {
             $requireLogin();
