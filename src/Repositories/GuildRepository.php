@@ -80,6 +80,15 @@ class GuildRepository
     }
 
     /**
+     * Update the message of the day for the given guild.
+     */
+    public function updateMotd(int $guildId, string $motd): void
+    {
+        $stmt = $this->db()->prepare('UPDATE guilds SET motd = :motd, updated_at = CURRENT_TIMESTAMP WHERE id = :id');
+        $stmt->execute(['motd' => $motd, 'id' => $guildId]);
+    }
+
+    /**
      * Fetch all guilds. Used by administrators to review guild listings.
      *
      * @return array<int, array<string, mixed>>

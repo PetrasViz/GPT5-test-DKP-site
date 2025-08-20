@@ -95,4 +95,16 @@ return [
             }
         },
     ],
+    '/management/motd' => [
+        'POST' => function () use ($requireLogin, $user, $management) {
+            $requireLogin();
+            if ($user['role'] === 'guild_member') {
+                http_response_code(403);
+                $message = 'Forbidden';
+                include __DIR__ . '/../views/errors/error.php';
+            } else {
+                $management->updateMotd();
+            }
+        },
+    ],
 ];
