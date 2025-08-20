@@ -110,4 +110,14 @@ class GuildServiceTest extends TestCase
 
         $this->assertTrue($service->transferLeadership(1, 1, 2));
     }
+
+    public function testSetMotdUpdatesRepository(): void
+    {
+        $repo = $this->createMock(GuildRepository::class);
+        $service = new GuildService($repo);
+
+        $repo->expects($this->once())->method('updateMotd')->with(3, 'Be brave');
+
+        $service->setMotd(3, 'Be brave');
+    }
 }

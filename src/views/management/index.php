@@ -5,6 +5,15 @@ ob_start();
 ?>
 <h1>Management</h1>
 
+<?php if (!empty($currentGuild)): ?>
+<h2>Message of the Day</h2>
+<form method="post" action="/management/motd" id="motdForm">
+    <?= \App\Helpers\Csrf::inputField() ?>
+    <textarea name="motd" id="motd" rows="3" cols="50"><?= htmlspecialchars($currentGuild['motd'] ?? '') ?></textarea><br>
+    <button type="submit">Save</button>
+</form>
+<?php endif; ?>
+
 <h2>Auctions</h2>
 <table>
     <thead>

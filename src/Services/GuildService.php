@@ -64,6 +64,11 @@ class GuildService
         return $this->guilds->getGuild($id);
     }
 
+    public function setMotd(int $guildId, string $motd): void
+    {
+        $this->guilds->updateMotd($guildId, $motd);
+    }
+
     public function transferLeadership(int $guildId, int $currentLeaderId, int $newLeaderId): bool
     {
         $guild = $this->guilds->getGuild($guildId);
