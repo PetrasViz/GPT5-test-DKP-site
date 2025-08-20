@@ -1,8 +1,12 @@
-# Redirect everything from root to /public
+Options -Indexes
 RewriteEngine On
+RewriteBase /
 
-# Don’t apply redirect if already inside /public
+# Serve existing files/directories as-is
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+
+# Internally route everything else to /public
 RewriteCond %{REQUEST_URI} !^/public/
-
-# Redirect all requests to /public while keeping the URI
-RewriteRule ^(.*)$ /public/$1 [L]
+RewriteRule ^(.*)$ public/$1 [L]
