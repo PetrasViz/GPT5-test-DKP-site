@@ -27,6 +27,7 @@ class AuthServiceTest extends TestCase
         $this->users->method('findByEmail')
             ->with($email)
             ->willReturn([
+                'id' => 1,
                 'password' => $hash,
                 'display_name' => 'User',
                 'role' => 'admin',
@@ -37,6 +38,7 @@ class AuthServiceTest extends TestCase
 
         $this->assertSame('User', $result['display_name']);
         $this->assertSame($email, $result['email']);
+        $this->assertSame(1, $result['id']);
         $this->assertArrayNotHasKey('guild', $result);
     }
 

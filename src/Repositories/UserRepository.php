@@ -38,6 +38,7 @@ class UserRepository
             return null;
         }
         return [
+            'id' => $user['id'],
             'password' => $user['password_hash'],
             'display_name' => $user['display_name'],
             'role' => $user['role'],
