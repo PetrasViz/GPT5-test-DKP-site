@@ -1,14 +1,5 @@
-RewriteEngine On
-
-# Don’t rewrite if already inside /public
-RewriteCond %{REQUEST_URI} !^/public/
-
-# Serve existing files/directories directly
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
-
-# IMPORTANT: when "/" is requested, hit the file, not the folder
-RewriteRule ^$ public/index.php [L]
-
-# Everything else gets mapped into /public
-RewriteRule ^(.*)$ public/$1 [L]
+ewriteEngine on
+RewriteCond %{HTTP_HOST} ^dimgrey-reindeer-851621.hostingersite.com$ [NC,OR]
+RewriteCond %{HTTP_HOST} ^dimgrey-reindeer-851621.hostingersite.com$
+RewriteCond %{REQUEST_URI} !public/
+RewriteRule (.*) /public/$1 [L]
