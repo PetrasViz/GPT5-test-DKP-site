@@ -52,6 +52,9 @@ class GuildController
             return;
         }
         $this->guilds->registerGuild($leaderId, $name);
+        $users = new \App\Repositories\UserRepository();
+        $users->update($_SESSION['user']['email'], ['role' => 'guild_leader']);
+        $_SESSION['user']['role'] = 'guild_leader';
         header('Location: /');
         exit;
     }

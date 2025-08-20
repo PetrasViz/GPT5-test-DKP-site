@@ -14,6 +14,10 @@ class GuildService
 
     public function registerGuild(int $leaderId, string $name): int
     {
+        $active = $this->guilds->getActiveMembership($leaderId);
+        if ($active) {
+            $this->guilds->leaveGuild($leaderId);
+        }
         return $this->guilds->createGuild($name, $leaderId);
     }
 
@@ -33,6 +37,31 @@ class GuildService
         }
         $this->guilds->addMember($guildId, $userId);
         return true;
+    }
+
+    public function leaveGuild(int $userId): void
+    {
+        $this->guilds->leaveGuild($userId);
+    }
+
+    public function joinGuild(int $userId, int $guildId): bool
+    {
+        $active = $this->guilds->getActiveMembership($userId);
+        if ($active) {
+            $this->guilds->leaveGuild($userId);
+        }
+        $this->guilds->addMember($guildId, $userId);
+        return true;
+    }
+
+    public function getActiveMembership(int $userId): ?array
+    {
+        return $this->guilds->getActiveMembership($userId);
+    }
+
+    public function getGuild(int $id): ?array
+    {
+        return $this->guilds->getGuild($id);
     }
 
     public function transferLeadership(int $guildId, int $currentLeaderId, int $newLeaderId): bool

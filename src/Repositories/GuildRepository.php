@@ -44,6 +44,12 @@ class GuildRepository
         $stmt->execute(['guild' => $guildId, 'user' => $userId]);
     }
 
+    public function leaveGuild(int $userId): void
+    {
+        $stmt = $this->db()->prepare('UPDATE guild_members SET left_at = CURRENT_TIMESTAMP WHERE user_id = :user AND left_at IS NULL');
+        $stmt->execute(['user' => $userId]);
+    }
+
     public function getActiveMembership(int $userId): ?array
     {
         $stmt = $this->db()->prepare('SELECT * FROM guild_members WHERE user_id = :user AND left_at IS NULL ORDER BY joined_at DESC LIMIT 1');

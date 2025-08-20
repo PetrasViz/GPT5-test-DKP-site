@@ -41,7 +41,7 @@ class AuthFeatureTest extends TestCase
         $role = 'guild_member';
         $gameRole = 'mage';
 
-        $this->assertTrue($this->auth->register($email, $password, $display, $role, $gameRole));
+        $this->assertTrue($this->auth->register($email, $password, $display, $gameRole, $role));
 
         $user = $this->auth->login($email, $password);
         $this->assertSame($display, $user['display_name']);
@@ -52,8 +52,8 @@ class AuthFeatureTest extends TestCase
     {
         $email = 'user@example.com';
         $password = 'secret';
-        $this->assertTrue($this->auth->register($email, $password, 'User', 'guild_member', 'mage'));
-        $this->assertFalse($this->auth->register($email, $password, 'User', 'guild_member', 'mage'));
+        $this->assertTrue($this->auth->register($email, $password, 'User', 'mage', 'guild_member'));
+        $this->assertFalse($this->auth->register($email, $password, 'User', 'mage', 'guild_member'));
     }
 }
 

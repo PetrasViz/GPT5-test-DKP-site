@@ -70,6 +70,18 @@ return [
             $profile->update();
         },
     ],
+    '/profile/join' => [
+        'POST' => function () use ($requireLogin, $profile) {
+            $requireLogin();
+            $profile->joinGuild();
+        },
+    ],
+    '/profile/leave' => [
+        'POST' => function () use ($requireLogin, $profile) {
+            $requireLogin();
+            $profile->leaveGuild();
+        },
+    ],
     '/management' => [
         'GET' => function () use ($requireLogin, $user, $management) {
             $requireLogin();

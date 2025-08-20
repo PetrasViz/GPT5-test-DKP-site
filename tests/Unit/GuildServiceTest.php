@@ -13,12 +13,38 @@ class GuildServiceTest extends TestCase
         $repo = $this->createMock(GuildRepository::class);
         $service = new GuildService($repo);
 
+        $repo->expects($this->once())->method('getActiveMembership')->with(1)->willReturn(null);
+        $repo->expects($this->never())->method('leaveGuild');
         $repo->expects($this->once())
             ->method('createGuild')
             ->with('Guild One', 1)
             ->willReturn(10);
 
         $this->assertSame(10, $service->registerGuild(1, 'Guild One'));
+    }
+
+    public function testRegisterGuildLeavesExistingGuild(): void
+    {
+        $repo = $this->createMock(GuildRepository::class);
+        $service = new GuildService($repo);
+
+        $repo->expects($this->once())->method('getActiveMembership')->with(1)->willReturn(['guild_id' => 2]);
+        $repo->expects($this->once())->method('leaveGuild')->with(1);
+        $repo->expects($this->once())->method('createGuild')->with('Guild Two', 1)->willReturn(11);
+
+        $this->assertSame(11, $service->registerGuild(1, 'Guild Two'));
+    }
+
+    public function testJoinGuildLeavesExistingGuild(): void
+    {
+        $repo = $this->createMock(GuildRepository::class);
+        $service = new GuildService($repo);
+
+        $repo->method('getActiveMembership')->with(5)->willReturn(['guild_id' => 2]);
+        $repo->expects($this->once())->method('leaveGuild')->with(5);
+        $repo->expects($this->once())->method('addMember')->with(3, 5);
+
+        $this->assertTrue($service->joinGuild(5, 3));
     }
 
     public function testAddMemberRespectsCooldown(): void
