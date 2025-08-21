@@ -57,6 +57,9 @@ class ManagementController
         $eventPage = min($eventPage, $eventPages);
         $eventItems = array_slice($eventItems, ($eventPage - 1) * $perPage, $perPage);
 
+        $defaultMinBid = $_SESSION['default_min_bid'] ?? 0;
+        $defaultAuctionTime = $_SESSION['default_auction_time'] ?? 60;
+
         include __DIR__ . '/../views/management/index.php';
     }
 
@@ -85,6 +88,138 @@ class ManagementController
         }
         $this->guilds->setMotd((int)$membership['guild_id'], $motd);
         $_SESSION['success'] = 'Message of the day updated';
+        header('Location: /management');
+        exit;
+    }
+
+    public function addEvent(): void
+    {
+        if (!Csrf::validateToken($_POST['csrf_token'] ?? '')) {
+            http_response_code(400);
+            $_SESSION['error'] = 'Invalid CSRF token';
+            header('Location: /management');
+            exit;
+        }
+        $name = trim($_POST['name'] ?? '');
+        $date = $_POST['date'] ?? date('Y-m-d');
+        $loot = array_filter(array_map('trim', explode(',', $_POST['loot'] ?? '')));
+        $event = $this->events->create($name, $date, $loot);
+        $minBid = $_SESSION['default_min_bid'] ?? 0;
+        $duration = $_SESSION['default_auction_time'] ?? 60;
+        foreach ($event['loot'] as $item) {
+            $this->auctions->create($item, $event['id'], $minBid, $duration);
+        }
+        $_SESSION['success'] = 'Event added';
+        header('Location: /management');
+        exit;
+    }
+
+    public function deleteEvent(): void
+    {
+        if (!Csrf::validateToken($_POST['csrf_token'] ?? '')) {
+            http_response_code(400);
+            $_SESSION['error'] = 'Invalid CSRF token';
+            header('Location: /management');
+            exit;
+        }
+        $id = (int)($_POST['id'] ?? 0);
+        $this->events->delete($id);
+        $_SESSION['success'] = 'Event deleted';
+        header('Location: /management');
+        exit;
+    }
+
+    public function updateAuctionSettings(): void
+    {
+        if (!Csrf::validateToken($_POST['csrf_token'] ?? '')) {
+            http_response_code(400);
+            $_SESSION['error'] = 'Invalid CSRF token';
+            header('Location: /management');
+            exit;
+        }
+        $_SESSION['default_min_bid'] = (float)($_POST['default_min_bid'] ?? 0);
+        $_SESSION['default_auction_time'] = (int)($_POST['default_auction_time'] ?? 60);
+        $_SESSION['success'] = 'Auction settings updated';
+        header('Location: /management');
+        exit;
+    }
+
+    public function closeAuction(): void
+    {
+        if (!Csrf::validateToken($_POST['csrf_token'] ?? '')) {
+            http_response_code(400);
+            $_SESSION['error'] = 'Invalid CSRF token';
+            header('Location: /management');
+            exit;
+        }
+        $id = (int)($_POST['id'] ?? 0);
+        $this->auctions->close($id);
+        $_SESSION['success'] = 'Auction closed';
+        header('Location: /management');
+        exit;
+    }
+
+    public function deleteAuction(): void
+    {
+        if (!Csrf::validateToken($_POST['csrf_token'] ?? '')) {
+            http_response_code(400);
+            $_SESSION['error'] = 'Invalid CSRF token';
+            header('Location: /management');
+            exit;
+        }
+        $id = (int)($_POST['id'] ?? 0);
+        $this->auctions->delete($id);
+        $_SESSION['success'] = 'Auction deleted';
+        header('Location: /management');
+        exit;
+    }
+
+    public function setAuctionWinner(): void
+    {
+        if (!Csrf::validateToken($_POST['csrf_token'] ?? '')) {
+            http_response_code(400);
+            $_SESSION['error'] = 'Invalid CSRF token';
+            header('Location: /management');
+            exit;
+        }
+        $id = (int)($_POST['id'] ?? 0);
+        $winner = trim($_POST['winner'] ?? '');
+        if ($winner !== '') {
+            $this->auctions->setWinner($id, $winner);
+            $_SESSION['success'] = 'Winner set';
+        }
+        header('Location: /management');
+        exit;
+    }
+
+    public function setAuctionMinBid(): void
+    {
+        if (!Csrf::validateToken($_POST['csrf_token'] ?? '')) {
+            http_response_code(400);
+            $_SESSION['error'] = 'Invalid CSRF token';
+            header('Location: /management');
+            exit;
+        }
+        $id = (int)($_POST['id'] ?? 0);
+        $minBid = (float)($_POST['min_bid'] ?? 0);
+        $this->auctions->setMinBid($id, $minBid);
+        $_SESSION['success'] = 'Minimum bid updated';
+        header('Location: /management');
+        exit;
+    }
+
+    public function setAuctionTime(): void
+    {
+        if (!Csrf::validateToken($_POST['csrf_token'] ?? '')) {
+            http_response_code(400);
+            $_SESSION['error'] = 'Invalid CSRF token';
+            header('Location: /management');
+            exit;
+        }
+        $id = (int)($_POST['id'] ?? 0);
+        $end = strtotime($_POST['end_time'] ?? '') ?: time();
+        $this->auctions->setEndTime($id, $end);
+        $_SESSION['success'] = 'Auction time updated';
         header('Location: /management');
         exit;
     }

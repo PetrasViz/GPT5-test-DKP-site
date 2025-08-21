@@ -136,4 +136,100 @@ return [
             }
         },
     ],
+    '/management/event-add' => [
+        'POST' => function () use ($requireLogin, $user, $management) {
+            $requireLogin();
+            if (!in_array($user['role'], ['ADMIN', 'LEADER', 'ADVISOR'])) {
+                http_response_code(403);
+                $message = 'Forbidden';
+                include __DIR__ . '/../views/errors/error.php';
+            } else {
+                $management->addEvent();
+            }
+        },
+    ],
+    '/management/event-delete' => [
+        'POST' => function () use ($requireLogin, $user, $management) {
+            $requireLogin();
+            if (!in_array($user['role'], ['ADMIN', 'LEADER', 'ADVISOR'])) {
+                http_response_code(403);
+                $message = 'Forbidden';
+                include __DIR__ . '/../views/errors/error.php';
+            } else {
+                $management->deleteEvent();
+            }
+        },
+    ],
+    '/management/auction-settings' => [
+        'POST' => function () use ($requireLogin, $user, $management) {
+            $requireLogin();
+            if (!in_array($user['role'], ['ADMIN', 'LEADER', 'ADVISOR'])) {
+                http_response_code(403);
+                $message = 'Forbidden';
+                include __DIR__ . '/../views/errors/error.php';
+            } else {
+                $management->updateAuctionSettings();
+            }
+        },
+    ],
+    '/management/auction-close' => [
+        'POST' => function () use ($requireLogin, $user, $management) {
+            $requireLogin();
+            if (!in_array($user['role'], ['ADMIN', 'LEADER', 'ADVISOR'])) {
+                http_response_code(403);
+                $message = 'Forbidden';
+                include __DIR__ . '/../views/errors/error.php';
+            } else {
+                $management->closeAuction();
+            }
+        },
+    ],
+    '/management/auction-delete' => [
+        'POST' => function () use ($requireLogin, $user, $management) {
+            $requireLogin();
+            if (!in_array($user['role'], ['ADMIN', 'LEADER', 'ADVISOR'])) {
+                http_response_code(403);
+                $message = 'Forbidden';
+                include __DIR__ . '/../views/errors/error.php';
+            } else {
+                $management->deleteAuction();
+            }
+        },
+    ],
+    '/management/auction-winner' => [
+        'POST' => function () use ($requireLogin, $user, $management) {
+            $requireLogin();
+            if (!in_array($user['role'], ['ADMIN', 'LEADER', 'ADVISOR'])) {
+                http_response_code(403);
+                $message = 'Forbidden';
+                include __DIR__ . '/../views/errors/error.php';
+            } else {
+                $management->setAuctionWinner();
+            }
+        },
+    ],
+    '/management/auction-minbid' => [
+        'POST' => function () use ($requireLogin, $user, $management) {
+            $requireLogin();
+            if (!in_array($user['role'], ['ADMIN', 'LEADER', 'ADVISOR'])) {
+                http_response_code(403);
+                $message = 'Forbidden';
+                include __DIR__ . '/../views/errors/error.php';
+            } else {
+                $management->setAuctionMinBid();
+            }
+        },
+    ],
+    '/management/auction-time' => [
+        'POST' => function () use ($requireLogin, $user, $management) {
+            $requireLogin();
+            if (!in_array($user['role'], ['ADMIN', 'LEADER', 'ADVISOR'])) {
+                http_response_code(403);
+                $message = 'Forbidden';
+                include __DIR__ . '/../views/errors/error.php';
+            } else {
+                $management->setAuctionTime();
+            }
+        },
+    ],
 ];
