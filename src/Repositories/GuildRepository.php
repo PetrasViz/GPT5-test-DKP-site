@@ -100,6 +100,25 @@ class GuildRepository
     }
 
     /**
+     * Retrieve active members for a guild.
+     *
+     * @param int $guildId
+     * @return array<int, array<string, mixed>>
+     */
+    public function getGuildMembers(int $guildId): array
+    {
+        $stmt = $this->db()->prepare(
+            'SELECT u.id, u.display_name, u.role, gm.joined_at
+             FROM guild_members gm
+             JOIN users u ON gm.user_id = u.id
+             WHERE gm.guild_id = :guild AND gm.left_at IS NULL
+             ORDER BY u.display_name'
+        );
+        $stmt->execute(['guild' => $guildId]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    /**
      * Mark a guild as blocked. The schema is expected to contain a `blocked`
      * column. This repository does not enforce the schema but issues the SQL
      * update so higher layers can flag a guild as suspended.

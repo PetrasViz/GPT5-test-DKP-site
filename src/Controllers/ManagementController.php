@@ -32,6 +32,13 @@ class ManagementController
             $allGuilds = $this->guilds->listGuilds();
         }
 
+        $guildMembers = [];
+        if ($currentGuild) {
+            $guildMembers = $this->guilds->listMembers((int)$currentGuild['id']);
+        }
+
+        $section = $_GET['section'] ?? 'motd';
+
         // Auctions
         $auctionPage = max(1, (int)($_GET['auction_page'] ?? 1));
         $auctionSort = $_GET['auction_sort'] ?? 'id';

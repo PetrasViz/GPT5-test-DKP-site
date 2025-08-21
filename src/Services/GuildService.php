@@ -103,6 +103,21 @@ class GuildService
     }
 
     /**
+     * Return active members of a guild.
+     *
+     * @param int $guildId
+     * @return array<int, array<string, mixed>>
+     */
+    public function listMembers(int $guildId): array
+    {
+        try {
+            return $this->guilds->getGuildMembers($guildId);
+        } catch (\PDOException $e) {
+            return [];
+        }
+    }
+
+    /**
      * Allow an administrator to join a guild either as a regular member or as
      * the leader. This bypasses the normal leader and cooldown checks.
      */
