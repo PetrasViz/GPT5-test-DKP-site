@@ -18,7 +18,6 @@ class ProfileController
     public function show(): void
     {
         $user = $_SESSION['user'];
-        $guilds = $this->guilds->listGuilds();
         $membership = $this->guilds->getActiveMembership($user['id']);
         $currentGuild = null;
         if ($membership) {

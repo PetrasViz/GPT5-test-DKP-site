@@ -60,18 +60,6 @@ return [
             $guild->register();
         },
     ],
-    '/guilds' => [
-        'GET' => function () use ($requireLogin, $guild, $user) {
-            $requireLogin();
-            if ($user['role'] !== 'ADMIN') {
-                http_response_code(403);
-                $message = 'Forbidden';
-                include __DIR__ . '/../views/errors/error.php';
-            } else {
-                $guild->index();
-            }
-        },
-    ],
     '/auctions' => [
         'GET' => function () use ($requireLogin, $auction) {
             $requireLogin();
@@ -229,6 +217,30 @@ return [
                 include __DIR__ . '/../views/errors/error.php';
             } else {
                 $management->setAuctionTime();
+            }
+        },
+    ],
+    '/management/guild-block' => [
+        'POST' => function () use ($requireLogin, $user, $management) {
+            $requireLogin();
+            if ($user['role'] !== 'ADMIN') {
+                http_response_code(403);
+                $message = 'Forbidden';
+                include __DIR__ . '/../views/errors/error.php';
+            } else {
+                $management->blockGuild();
+            }
+        },
+    ],
+    '/management/guild-ban' => [
+        'POST' => function () use ($requireLogin, $user, $management) {
+            $requireLogin();
+            if ($user['role'] !== 'ADMIN') {
+                http_response_code(403);
+                $message = 'Forbidden';
+                include __DIR__ . '/../views/errors/error.php';
+            } else {
+                $management->banGuild();
             }
         },
     ],

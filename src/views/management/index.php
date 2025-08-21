@@ -14,6 +14,32 @@ ob_start();
 </form>
 <?php endif; ?>
 
+<?php if ($user['role'] === 'ADMIN'): ?>
+<h2>Guilds</h2>
+<table>
+    <tr><th>ID</th><th>Name</th><th>Leader</th><th>Actions</th></tr>
+    <?php foreach ($allGuilds as $g): ?>
+    <tr>
+        <td><?= htmlspecialchars($g['id']) ?></td>
+        <td><?= htmlspecialchars($g['name']) ?></td>
+        <td><?= htmlspecialchars($g['leader_id']) ?></td>
+        <td>
+            <form method="post" action="/management/guild-block" style="display:inline">
+                <?= \App\Helpers\Csrf::inputField() ?>
+                <input type="hidden" name="id" value="<?= $g['id'] ?>">
+                <button type="submit">Block</button>
+            </form>
+            <form method="post" action="/management/guild-ban" style="display:inline">
+                <?= \App\Helpers\Csrf::inputField() ?>
+                <input type="hidden" name="id" value="<?= $g['id'] ?>">
+                <button type="submit">Ban</button>
+            </form>
+        </td>
+    </tr>
+    <?php endforeach; ?>
+</table>
+<?php endif; ?>
+
 <h2>Auction Settings</h2>
 <form method="post" action="/management/auction-settings">
     <?= \App\Helpers\Csrf::inputField() ?>

@@ -27,6 +27,10 @@ class ManagementController
         if ($membership) {
             $currentGuild = $this->guilds->getGuild((int)$membership['guild_id']);
         }
+        $allGuilds = [];
+        if ($user['role'] === 'ADMIN') {
+            $allGuilds = $this->guilds->listGuilds();
+        }
 
         // Auctions
         $auctionPage = max(1, (int)($_GET['auction_page'] ?? 1));
@@ -220,6 +224,36 @@ class ManagementController
         $end = strtotime($_POST['end_time'] ?? '') ?: time();
         $this->auctions->setEndTime($id, $end);
         $_SESSION['success'] = 'Auction time updated';
+        header('Location: /management');
+        exit;
+    }
+
+    public function blockGuild(): void
+    {
+        if (!Csrf::validateToken($_POST['csrf_token'] ?? '')) {
+            http_response_code(400);
+            $_SESSION['error'] = 'Invalid CSRF token';
+            header('Location: /management');
+            exit;
+        }
+        $id = (int)($_POST['id'] ?? 0);
+        $this->guilds->blockGuild($id);
+        $_SESSION['success'] = 'Guild blocked';
+        header('Location: /management');
+        exit;
+    }
+
+    public function banGuild(): void
+    {
+        if (!Csrf::validateToken($_POST['csrf_token'] ?? '')) {
+            http_response_code(400);
+            $_SESSION['error'] = 'Invalid CSRF token';
+            header('Location: /management');
+            exit;
+        }
+        $id = (int)($_POST['id'] ?? 0);
+        $this->guilds->banGuild($id);
+        $_SESSION['success'] = 'Guild banned';
         header('Location: /management');
         exit;
     }
