@@ -35,9 +35,11 @@ if ($user) {
         <div class="collapse navbar-collapse" id="mainNav">
             <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                 <li class="nav-item"><a class="nav-link <?= $currentPage === 'home' ? 'active' : '' ?>" href="/">Home</a></li>
-                <li class="nav-item"><a class="nav-link <?= $currentPage === 'auctions' ? 'active' : '' ?>" href="/auctions">Auctions</a></li>
-                <li class="nav-item"><a class="nav-link <?= $currentPage === 'auction-history' ? 'active' : '' ?>" href="/auction-history">Auction History</a></li>
-                <li class="nav-item"><a class="nav-link <?= $currentPage === 'event-history' ? 'active' : '' ?>" href="/event-history">Event History</a></li>
+                <?php if ($membership): ?>
+                    <li class="nav-item"><a class="nav-link <?= $currentPage === 'auctions' ? 'active' : '' ?>" href="/auctions">Auctions</a></li>
+                    <li class="nav-item"><a class="nav-link <?= $currentPage === 'auction-history' ? 'active' : '' ?>" href="/auction-history">Auction History</a></li>
+                    <li class="nav-item"><a class="nav-link <?= $currentPage === 'event-history' ? 'active' : '' ?>" href="/event-history">Event History</a></li>
+                <?php endif; ?>
                 <?php if ($user): ?>
                     <li class="nav-item"><a class="nav-link <?= $currentPage === 'profile' ? 'active' : '' ?>" href="/profile">Profile</a></li>
                     <?php if (in_array($user['role'], ['ADMIN', 'LEADER', 'ADVISOR'])): ?>
