@@ -29,10 +29,13 @@ if (file_exists($vendor)) {
 // Try requiring routes
 if (file_exists($routes)) {
     echo "Including routes...\n";
+
     // Define stubs for variables expected by the routes file to avoid warnings
     $auth = $guild = $auction = $event = $profile = $management = new class {};
     $requireLogin = function () {};
     $user = ['role' => ''];
+
+
     $routesArr = require $routes;
     echo "Routes loaded: " . (is_array($routesArr) ? count($routesArr) . " entries\n" : "unexpected type\n");
 } else {
