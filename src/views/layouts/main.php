@@ -6,6 +6,11 @@
 $title = $title ?? 'DKP Site';
 $currentPage = $currentPage ?? '';
 $user = $user ?? ($_SESSION['user'] ?? null);
+$membership = null;
+if ($user) {
+    $guildService = new \App\Services\GuildService();
+    $membership = $guildService->getActiveMembership($user['id']);
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -37,9 +42,8 @@ $user = $user ?? ($_SESSION['user'] ?? null);
                     <?php if (in_array($user['role'], ['ADMIN', 'LEADER', 'ADVISOR'])): ?>
                         <li class="nav-item"><a class="nav-link <?= $currentPage === 'management' ? 'active' : '' ?>" href="/management">Management</a></li>
                     <?php endif; ?>
-                    <li class="nav-item"><a class="nav-link <?= $currentPage === 'guild_register' ? 'active' : '' ?>" href="/guild/register">New Guild</a></li>
-                    <?php if ($user['role'] === 'ADMIN'): ?>
-                        <li class="nav-item"><a class="nav-link <?= $currentPage === 'guilds' ? 'active' : '' ?>" href="/guilds">Guilds</a></li>
+                    <?php if (!$membership): ?>
+                        <li class="nav-item"><a class="nav-link <?= $currentPage === 'guild_register' ? 'active' : '' ?>" href="/guild/register">New Guild</a></li>
                     <?php endif; ?>
                     <li class="nav-item"><a class="nav-link" href="/logout">Logout</a></li>
                 <?php else: ?>
