@@ -1,12 +1,16 @@
-Options -Indexes
-RewriteEngine On
-RewriteBase /
+# Use the public folder's index for the homepage
+DirectoryIndex public/index.php
 
-# If request is for an existing file/dir in root, serve it
+RewriteEngine On
+
+# If someone browses /public directly, canonicalize to /
+RewriteCond %{REQUEST_URI} ^/public/?(.*)$ [NC]
+RewriteRule ^public/?(.*)$ /$1 [R=301,L]
+
+# Serve existing files/dirs in root as-is (rare, but safe)
 RewriteCond %{REQUEST_FILENAME} -f [OR]
 RewriteCond %{REQUEST_FILENAME} -d
 RewriteRule ^ - [L]
 
-# Internally rewrite anything else into /public
-RewriteCond %{REQUEST_URI} !^/public/
+# Internally map everything to /public/… (assets and routes)
 RewriteRule ^(.*)$ public/$1 [L]
