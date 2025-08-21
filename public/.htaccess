@@ -1,12 +1,13 @@
-Options -Indexes
-DirectoryIndex index.php index.html
+Options +FollowSymLinks
 RewriteEngine On
-RewriteBase /public/
 
-# Serve existing files and folders normally
+# Serve real files and directories in /public directly (css, js, images)
 RewriteCond %{REQUEST_FILENAME} -f [OR]
 RewriteCond %{REQUEST_FILENAME} -d
 RewriteRule ^ - [L]
 
-# Otherwise, route everything to index.php
+# Otherwise hand everything to index.php (your router)
 RewriteRule ^ index.php [L]
+
+# Ensure index files work in /public
+DirectoryIndex index.php index.html
