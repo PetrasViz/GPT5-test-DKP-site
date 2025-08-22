@@ -37,7 +37,10 @@ class EventRepository
 
     public function create(string $name, string $date, array $loot = []): array
     {
-        $stmt = $this->db()->prepare('INSERT INTO events (name, event_type_id, occurred_at, notes, dropped_item, created_by, created_at) VALUES (:name, 1, :occurred_at, NULL, :dropped, 1, CURRENT_TIMESTAMP)');
+        $stmt = $this->db()->prepare(
+            'INSERT INTO events (name, event_type_id, occurred_at, notes, dropped_item, created_by, created_at) '
+            . 'VALUES (:name, 1, :occurred_at, NULL, :dropped, 1, CURRENT_TIMESTAMP)'
+        );
         $stmt->execute([
             'name' => $name,
             'occurred_at' => $date . ' 00:00:00',
